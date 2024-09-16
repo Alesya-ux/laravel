@@ -11,14 +11,14 @@
         
         <section class=" py-4 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-xl max-w-[95%] mx-auto  fade-in section-shadow   ">
           
-        <div class="container mx-auto px-4 ">
+        <div class="w-full px-4 ">
                 
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach($catalogs as $catalog)
                         <div class=" group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
                             <!-- Изображение -->
-                            <div class="relative h-56 overflow-hidden bg-white">
+                            <div class="relative h-48 overflow-hidden bg-white">
                                 <img src="{{ asset('storage/' . $catalog->picture) }}" 
                                      alt="{{ $catalog->name }}" 
                                      class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">

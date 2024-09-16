@@ -56,9 +56,9 @@
                                                         } else {
                                                             $prices = [$price];
                                                         }
-                                                        $firstPrice = trim($prices[0]);
+                                                        $firstPrice = number_format((float)trim($prices[0]), 2, ',', ' ');
                                                     @endphp
-                                                    <span class="text-lg font-bold text-cyan-700">от {{ $firstPrice }} BYN</span>
+                                                    <span class="text-lg font-bold text-cyan-700">от {{ $firstPrice }} руб</span>
                                                 </div>
                                             @endif
                                         </div>

@@ -12,56 +12,69 @@
 
         <!-- Основная информация о продукте -->
         <article class="max-w-[95%] mx-auto mb-8">
-            <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex flex-col lg:flex-row gap-8 min-h-[600px]">
                 
                 <!-- Левая панель - Изображение продукта -->
-                <div class="w-full lg:w-1/2">
-                    <div class="relative">
+                <div class="w-full lg:w-1/2 flex flex-col">
+                    <div class="relative flex-1 flex flex-col">
                         <!-- Главное изображение -->
-                        <figure class="relative overflow-hidden rounded-lg shadow-lg bg-white p-4">
-                            <a href="{{ asset('storage/' . $product->picture) }}" class="block">
-                                <img src="{{ asset('storage/' . $product->picture) }}" 
+                        <figure class="relative overflow-hidden rounded-lg shadow-lg bg-white p-4 h-96">
+                            <a href="{{ $product->main_image_url }}" class="block h-full" id="main-image-link">
+                                <img src="{{ $product->main_image_url }}" 
                                      alt="{{ $product->name }}"
-                                     class="w-full h-96 object-cover object-center img-hover transition-all duration-300">
+                                     class="w-full h-full object-cover object-center img-hover transition-all duration-300"
+                                     id="main-image">
                             </a>
                         </figure>
                         
-                        <!-- Миниатюры (заглушка для будущих изображений) -->
+                        <!-- Миниатюры изображений -->
+                        @if($product->hasAdditionalImages() || $product->images->count() > 1)
+                        <div class="flex space-x-2 mt-4 overflow-x-auto">
+                            @foreach($product->getAllImagesOrdered() as $index => $image)
+                                <div class="w-16 h-16 border-2 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 {{ $index === 0 ? 'border-red-600' : 'border-gray-300 hover:border-red-400' }}"
+                                     onclick="changeMainImage('{{ $image->image_url }}', '{{ $image->alt_text ?: $product->name }}')">
+                                    <img src="{{ $image->image_url }}" 
+                                         alt="{{ $image->alt_text ?: $product->name }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            @endforeach
+                        </div>
+                        @elseif($product->picture)
+                        <!-- Обратная совместимость - показываем старое изображение -->
                         <div class="flex space-x-2 mt-4">
-                            <div class="w-16 h-16 border-2 border-cyan-600 rounded-lg overflow-hidden">
-                                <img src=" 
-                                     alt=""
-                                     class="w-full h-full object-cover">
-                            </div>
-                                                         <div class="w-16 h-16 border border-gray-300 rounded-lg overflow-hidden">
-                                <img src="" 
-                                     alt=""
+                            <div class="w-16 h-16 border-2 border-red-600 rounded-lg overflow-hidden">
+                                <img src="{{ asset('storage/' . $product->picture) }}" 
+                                     alt="{{ $product->name }}"
                                      class="w-full h-full object-cover">
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
 
                 <!-- Правая панель - Опции покупки -->
-                <div class="w-full lg:w-1/2">
-                    <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-100">
+                <div class="w-full lg:w-1/2 flex flex-col">
+                    <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-100 flex flex-col justify-between h-full">
                         
-                        <!-- Название продукта -->
-                        <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
-                            {{ $product->name }}
-                        </h1>
+                        <!-- Верхний блок - Информация о товаре -->
+                        <div class="flex-1">
+                            <!-- Название продукта -->
+                            <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
+                                {{ $product->name }}
+                            </h1>
 
-                        <!-- Цена -->
-                        <div class="mb-6">
-                            <div class="text-3xl font-bold text-red-600 mb-1" id="current-price">
-                                @if(count($sizes_with_prices) > 0)
-                                    {{ number_format(array_values($sizes_with_prices)[0], 2, ',', ' ') }} руб
-                                @else
-                                    {{ $product->formatted_price }}
-                                @endif
+                            <!-- Цена -->
+                            <div class="mb-6">
+                                <div class="text-3xl font-bold text-red-600 mb-1" id="current-price">
+                                    @if(count($sizes_with_prices) > 0)
+                                        {{ number_format(array_values($sizes_with_prices)[0], 2, ',', ' ') }} руб
+                                    @else
+                                        {{ $product->formatted_price }}
+                                    @endif
+                                </div>
+                                
+                                <div class="text-sm text-gray-600">За 1 шт.</div>
                             </div>
-                            <div class="text-sm text-gray-600">За 1 шт.</div>
-                        </div>
 
                         <!-- Выбор размера -->
                         <div class="mb-6">
@@ -102,9 +115,10 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
 
-                        <!-- Кнопка добавления в корзину -->
-                        <div class="mb-4">
+                        <!-- Нижний блок - Кнопка добавления в корзину -->
+                        <div class="mt-6">
                             <a href="/cart/add/{{ $product->id }}" 
                                class="w-full bg-red-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-red-700 transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,6 +229,27 @@
             // Инициализация при загрузке страницы
             updateTotal();
         });
+        
+        // Функция для смены главного изображения
+        function changeMainImage(imageUrl, altText) {
+            const mainImage = document.getElementById('main-image');
+            const mainImageLink = document.getElementById('main-image-link');
+            
+            if (mainImage && mainImageLink) {
+                mainImage.src = imageUrl;
+                mainImage.alt = altText;
+                mainImageLink.href = imageUrl;
+                
+                // Обновляем активную миниатюру
+                document.querySelectorAll('.w-16.h-16').forEach(thumb => {
+                    thumb.classList.remove('border-red-600');
+                    thumb.classList.add('border-gray-300');
+                });
+                
+                event.target.closest('.w-16.h-16').classList.remove('border-gray-300');
+                event.target.closest('.w-16.h-16').classList.add('border-red-600');
+            }
+        }
     </script>
 
 @endsection

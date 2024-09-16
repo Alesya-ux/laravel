@@ -24,19 +24,19 @@
                 <h2 class="text-lg font-semibold text-gray-800">Товары в корзине</h2>
             </div>
             <div class="divide-y divide-gray-200">
-                <!-- Товары корзины -->
+                Товары корзины -->
             </div>
             <div class="px-6 py-4 bg-gray-50">
                 <div class="flex justify-between items-center">
                     <span class="text-lg font-semibold">Итого:</span>
-                    <span class="text-2xl font-bold text-cyan-700">0 ₽</span>
+                    <span class="text-2xl font-bold text-cyan-700">0,00 руб</span>
                 </div>
                 <button class="btn bg-cyan-700 hover:bg-cyan-800 text-white w-full mt-4">
                     Оформить заказ
                 </button>
             </div>
         </div>
-        -->
+        
     </div>
 </div>
 @endsection 

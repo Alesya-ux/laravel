@@ -19,6 +19,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use App\Models\ProductSize;
+use App\Models\ProductImage;
 
 
 class ProductResource extends Resource
@@ -31,9 +32,42 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('picture')->directory('products'),
+                // FileUpload::make('picture')->directory('products'), // Скрыто - используем новую систему изображений
                 TextInput::make('name')->columnSpanFull(),
                 RichEditor::make('description')->columnSpanFull(),
+                
+                // Система изображений
+                Repeater::make('images')
+                    ->relationship('images')
+                    ->schema([
+                        FileUpload::make('image_path')
+                            ->label('Изображение')
+                            ->directory('products')
+                            ->required()
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '16:9',
+                                '4:3',
+                                '1:1',
+                            ]),
+                        TextInput::make('alt_text')
+                            ->label('Альтернативный текст')
+                            ->placeholder('Описание изображения'),
+                        TextInput::make('sort_order')
+                            ->label('Порядок')
+                            ->numeric()
+                            ->default(0)
+                            ->placeholder('0'),
+                        Forms\Components\Toggle::make('is_main')
+                            ->label('Главное изображение')
+                            ->default(false),
+                    ])
+                    ->columns(2)
+                    ->addActionLabel('Добавить изображение')
+                    ->collapsible()
+                    ->defaultItems(1)
+                    ->reorderable('sort_order'),
                 
                 // Система размеров с ценами
                 Repeater::make('sizes')
@@ -62,10 +96,16 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('picture'),
+                ImageColumn::make('mainImage.image_path')
+                    ->label('Главное изображение')
+                    ->size(60),
                 TextColumn::make('name'),
+                TextColumn::make('images_count')
+                    ->label('Изображения')
+                    ->counts('images')
+                    ->badge(),
                 TextColumn::make('sizes_count')
-                    ->label('Количество размеров')
+                    ->label('Размеры')
                     ->counts('sizes')
                     ->badge(),
                 TextColumn::make('min_price')

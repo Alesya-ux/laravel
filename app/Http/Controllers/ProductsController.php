@@ -12,8 +12,8 @@ class ProductsController extends Controller
         $catalogs = Catalog::whereNull('parent_id')->orderBy('id')->get();
         $world = 'product';
         
-        // Загружаем размеры с ценами
-        $product->load('sizes');
+        // Загружаем размеры с ценами и изображения
+        $product->load(['sizes', 'images', 'mainImage']);
         
         // Получаем размеры из новой таблицы или из старого поля (для обратной совместимости)
         $size_arr = [];

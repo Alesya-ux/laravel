@@ -3,153 +3,246 @@
 @section('content')
 
 <style>
-/* Карусель */
-.carousel-item {
-    transition: opacity 0.5s ease-in-out;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
+/* ========================================
+   СТИЛИ ДЛЯ КАТАЛОГА (TAILWIND COMPATIBLE)
+   ======================================== */
 
-.carousel-item.active {
-    opacity: 1;
-    position: relative;
-}
-
-.carousel-container {
-    position: relative;
-    height: 450px;
+/* Ограничение текста для Tailwind */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Дополнительный breakpoint для очень маленьких экранов */
+@media (max-width: 640px) {
+    .xs\:w-\[calc\(100\%-0\.1rem\)\] {
+        width: calc(100% - 0.1rem);
+    }
+}
+
+
+/* ========================================
+   СТИЛИ ГЛАВНОЙ КАРУСЕЛИ (MAIN CAROUSEL)
+   ========================================
+   
+   ОПИСАНИЕ:
+   - CSS стили для интерактивного слайдера
+   - Анимации переходов между слайдами
+   - Стили кнопок навигации
+   - Адаптивные стили для разных устройств
+*/
+
+/* ========================================
+   СТИЛИ СЛАЙДОВ КАРУСЕЛИ
+   ======================================== */
+
+/* 
+    БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СЛАЙДОВ
+    ================================
+    
+    ОПИСАНИЕ:
+    - Применяются ко всем слайдам по умолчанию
+    - Слайды изначально невидимы (opacity: 0)
+    - Используется абсолютное позиционирование для наложения
+    - Плавные переходы для создания анимации
+*/
+.carousel-item {
+    transition: opacity 0.5s ease-in-out;  /* Плавный переход прозрачности за 0.5 секунды */
+    opacity: 0;                             /* Изначально полностью прозрачен (невидим) */
+    position: absolute;                     /* Абсолютное позиционирование для наложения слайдов */
+    top: 0;                                /* Позиционирование сверху */
+    left: 0;                               /* Позиционирование слева */
+    width: 100%;                           /* Занимает всю ширину контейнера */
+    height: 100%;                          /* Занимает всю высоту контейнера */
+}
+
+/* 
+    СТИЛИ ДЛЯ АКТИВНОГО СЛАЙДА
+    ===========================
+    
+    ОПИСАНИЕ:
+    - Применяются только к видимому слайду
+    - Полная непрозрачность (opacity: 1)
+    - Относительное позиционирование для нормального потока документа
+*/
+.carousel-item.active {
+    opacity: 1;                             /* Полностью непрозрачен (видим) */
+    position: relative;                     /* Относительное позиционирование для нормального потока */
+}
+
+/* ========================================
+   КОНТЕЙНЕР КАРУСЕЛИ
+   ======================================== */
+
+/* 
+    ОСНОВНОЙ КОНТЕЙНЕР ДЛЯ СЛАЙДЕРА
+    =================================
+    
+    ОПИСАНИЕ:
+    - Создает контекст позиционирования для слайдов
+    - Устанавливает фиксированную высоту
+    - Скрывает выходящие за границы элементы
+*/
+.carousel-container {
+    position: relative;                     /* Создает контекст позиционирования для абсолютно позиционированных слайдов */
+    height: 450px;                         /* Фиксированная высота карусели  */
+    overflow: hidden;                      /* Скрывает части слайдов, выходящие за границы контейнера */
+}
+
+/* ========================================
+   КНОПКИ НАВИГАЦИИ КАРУСЕЛИ
+   ======================================== */
+
+/* 
+    БАЗОВЫЕ СТИЛИ ДЛЯ КНОПОК НАВИГАЦИИ
+    ===================================
+    
+    ОПИСАНИЕ:
+    - Круглые полупрозрачные кнопки
+    - Позиционируются поверх слайдов
+    - Имеют hover эффекты и плавные переходы
+    - Центрируются по вертикали
+*/
 .carousel-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 20;
-    background-color: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    position: absolute;                     /* Абсолютное позиционирование относительно контейнера карусели */
+    top: 50%;                              /* Позиционирование по центру по вертикали */
+    transform: translateY(-50%);           /* Точное центрирование с учетом высоты кнопки */
+    z-index: 20;                          /* Высокий z-index для отображения поверх слайдов */
+    background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый фон (80% непрозрачности) */
+    border: none;                          /* Убираем стандартную рамку */
+    border-radius: 50%;                    /* Круглая форма кнопки */
+    width: 50px;                          /* Ширина кнопки (3.125rem) */
+    height: 50px;                         /* Высота кнопки (3.125rem) */
+    display: flex;                         /* Flexbox для центрирования содержимого */
+    align-items: center;                   /* Центрирование по вертикали */
+    justify-content: center;               /* Центрирование по горизонтали */
+    cursor: pointer;                       /* Курсор-указатель при наведении */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона за 0.3 секунды */
 }
 
+/* 
+    HOVER ЭФФЕКТ ДЛЯ КНОПОК НАВИГАЦИИ
+    ===================================
+    
+    ОПИСАНИЕ:
+    - При наведении курсора фон становится полностью белым
+    - Создает интерактивность и улучшает UX
+*/
 .carousel-nav-btn:hover {
-    background-color: white;
+    background-color: white;               /* Полностью белый фон при наведении */
 }
 
+/* 
+    ПОЗИЦИОНИРОВАНИЕ ЛЕВОЙ КНОПКИ (ПРЕДЫДУЩИЙ)
+    ===========================================
+    
+    ОПИСАНИЕ:
+    - Размещается слева от контейнера
+    - Отступ 20px от левого края
+*/
 .carousel-nav-btn.prev {
-    left: 20px;
+    left: 20px;                           /* Отступ от левого края (1.25rem) */
 }
 
+/* 
+    ПОЗИЦИОНИРОВАНИЕ ПРАВОЙ КНОПКИ (СЛЕДУЮЩИЙ)
+    ===========================================
+    
+    ОПИСАНИЕ:
+    - Размещается справа от контейнера
+    - Отступ 20px от правого края
+*/
 .carousel-nav-btn.next {
-    right: 20px;
+    right: 20px;                          /* Отступ от правого края (1.25rem) */
 }
 
+/* 
+    СТИЛИ ДЛЯ ОТКЛЮЧЕННЫХ КНОПОК
+    ==============================
+    
+    ОПИСАНИЕ:
+    - Применяются когда кнопка неактивна
+    - Сниженная прозрачность и отключенный курсор
+    - Используется для крайних слайдов (первый/последний)
+*/
 .carousel-nav-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    opacity: 0.5;                         /* Сниженная прозрачность (50%) */
+    cursor: not-allowed;                  /* Курсор "запрещено" */
 }
 
-/* Анимация смены изображений для блока "О нас" */
-.image-slide {
-    transition: opacity 0.5s ease-in-out;
-}
-
-@keyframes imageCycle1 {
-    0%, 15% { opacity: 1; } /* 0-1.8 секунды - первая картинка */
-    20%, 80% { opacity: 0; } /* 2.4-9.6 секунды - скрыта */
-    85%, 100% { opacity: 1; } /* 10.2-12 секунды - первая картинка */
-}
-
-@keyframes imageCycle2 {
-    0%, 15% { opacity: 0; } /* 0-1.8 секунды - скрыта */
-    20%, 30% { opacity: 1; } /* 2.4-3.6 секунды - вторая картинка */
-    35%, 80% { opacity: 0; } /* 4.2-9.6 секунды - скрыта */
-    85%, 100% { opacity: 0; } /* 10.2-12 секунды - скрыта */
-}
-
-@keyframes imageCycle3 {
-    0%, 30% { opacity: 0; } /* 0-3.6 секунды - скрыта */
-    35%, 50% { opacity: 1; } /* 4.2-6 секунды - третья картинка */
-    55%, 100% { opacity: 0; } /* 6.6-12 секунды - скрыта */
-}
 </style>
 
     <main>
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in">
-            <div class="carousel-container w-full" id="mainCarousel">
-                <!-- Слайд 1: АДЕНТИНА СЕРВИС -->
+        <!-- ГЛАВНАЯ КАРУСЕЛЬ (MAIN CAROUSEL) -->
+        <section class="rounded-lg bg-neutral-50 shadow-lg p-2 sm:p-4 max-w-[95%] mx-auto mt-6 sm:mt-8 md:mt-10 fade-in">
+            <div class="carousel-container w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]" id="mainCarousel">
                 <div id="slide1" class="carousel-item active">
                     <div class="hero relative overflow-hidden h-full">
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/1.png'); background-size: cover; background-position: center; opacity: 0.2;"></div>
                         <div class="hero-content flex-col lg:flex-row-reverse relative z-10 ">
-                            <div class="px-20">
-                                <h1 class="text-7xl font-bold text-gray-800 ">Профессиональные дезинфицирующие средства и оборудование</h1>
-                                
-                                <div class="flex justify-end">
-                                    <a href="/catalog" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Каталог</a>
+                            <div class="px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+                                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-800 leading-tight">Профессиональные дезинфицирующие средства и оборудование</h1>
+                                <div class="flex justify-end mt-4">
+                                    <a href="/catalog" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold">Каталог</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Слайд 2: Дезинфицирующее оборудование -->
                 <div id="slide2" class="carousel-item">
                     <div class="hero relative overflow-hidden h-full">
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/2.jpg'); background-size: cover; background-position: center; opacity: 0.2;"></div>
                         <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                            <div class="">
-                                <h1 class="text-7xl font-bold text-gray-800">Дезинфицирующее оборудование</h1>
-                                <p class="py-4 text-2xl font-semibold text-gray-700">
+                            <div class="px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+                                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-800 leading-tight">Дезинфицирующее оборудование</h1>
+                                <p class="py-2 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-700 leading-relaxed">
                                     Профессиональные решения для дезинфекции: от портативных устройств до промышленных систем!
                                 </p>
-                                <div class="flex justify-end">
-                                    <a href="/catalog/2" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Узнать больше</a>
+                                <div class="flex justify-end mt-4">
+                                    <a href="/catalog/2" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold">Узнать больше</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Слайд 3: Антибактериальные ковры -->
                 <div id="slide3" class="carousel-item">
                     <div class="hero relative overflow-hidden h-full">
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/3.jpg'); background-size: cover; background-position: center; opacity: 0.2;"></div>
                         <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                            <div class="">
-                                <h1 class="text-7xl font-bold text-gray-800">Антибактериальные ковры</h1>
-                                <p class="py-4 text-2xl font-semibold text-gray-700">
+                            <div class="px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+                                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gray-800 leading-tight">Антибактериальные ковры</h1>
+                                <p class="py-2 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-700 leading-relaxed">
                                     Инновационные ковры с антибактериальными свойствами для безопасной среды в вашем помещении!
                                 </p>
-                                <div class="flex justify-end">
-                                    <a href="/catalog/1" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Выбрать ковер</a>
+                                <div class="flex justify-end mt-4">
+                                    <a href="/catalog/1" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold">Выбрать ковер</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Кнопки навигации -->
                 <button class="carousel-nav-btn prev" id="prevBtn">❮</button>
                 <button class="carousel-nav-btn next" id="nextBtn">❯</button>
             </div>
         </section>
 
         <!-- Блок "О нас" -->
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-6 max-w-[70%] mx-auto mt-10 fade-in">
+        <section class="rounded-lg bg-neutral-50 shadow-lg p-10 max-w-[70%] mx-auto mt-10 fade-in">
             <div class="ml-4 w-full lg:w-1/2 mb-6">
                 <h2 class="text-3xl font-semibold text-gray-800">О нас</h2>
             </div>
@@ -253,7 +346,7 @@
             </div>
         </section>
 
-        <section class="rounded-lg bg-neutral-50 max-w-[95%] mx-auto shadow-lg p-4 mt-10 fade-in">
+        <section class="rounded-lg bg-neutral-50 max-w-[95%] mx-auto shadow-lg p-10 mt-10 fade-in">
             <div class="ml-4 w-full lg:w-1/2">
                 <h2 class="text-3xl font-semibold text-gray-800">Каталог</h2>
             </div>
@@ -261,11 +354,11 @@
             <!-- Адаптивная карусель каталога -->
             <div class="relative mt-6">
                 <!-- Контейнер карусели -->
-                <div class="catalog-carousel overflow-hidden">
-                    <div class="catalog-track flex transition-transform duration-500 ease-in-out" id="catalogTrack">
+                <div class="relative w-full overflow-hidden py-3 bg-transparent">
+                    <div class="flex transition-transform duration-500 ease-in-out" id="catalogTrack">
                         @foreach($catalogs as $catalog)
-                            <div class="catalog-slide flex-shrink-0">
-                                <div class="card bg-base-200 image-full shadow-lg hover-lift transition-all duration-300 group mx-2">
+                            <div class="catalog-slide flex-shrink-0 w-[calc(20%-0.1rem)] min-w-[160px] xl:w-[calc(20%-0.1rem)] lg:w-[calc(25%-0.1rem)] md:w-[calc(33.333%-0.1rem)] sm:w-[calc(50%-0.1rem)] xs:w-[calc(100%-0.1rem)]">
+                                <div class="card bg-base-200 image-full shadow-lg transition-all duration-300 group mx-0.5 h-[420px] md:h-[380px] sm:h-[400px] hover:-translate-y-2 hover:shadow-2xl">
                                     <figure class="relative overflow-hidden">
                                         <img src="/storage/{{$catalog->picture}}" alt="{{$catalog->name}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                     </figure>
@@ -291,42 +384,221 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Карусель
+    // ========================================
+    // АНИМАЦИИ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ (FADE-IN)
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Анимация плавного появления элементов при прокрутке страницы
+        - Использует современный Intersection Observer API
+        - Элементы с классом 'fade-in' плавно появляются при видимости
+        - Создает эффект "раскрытия" контента по мере прокрутки
+        - Улучшает пользовательский опыт и восприятие страницы
+        
+        ПРИНЦИП РАБОТЫ:
+        1. Находим все элементы с классом 'fade-in'
+        2. Создаем Intersection Observer для отслеживания видимости
+        3. При появлении элемента в области видимости добавляем класс 'fade-in-visible'
+        4. CSS автоматически анимирует появление элемента
+    */
+    
+    // Функция для инициализации анимаций появления элементов
+    function initScrollAnimations() {
+        // ========================================
+        // НАСТРОЙКИ ДЛЯ INTERSECTION OBSERVER
+        // ========================================
+        
+        /*
+            ОПИСАНИЕ ПАРАМЕТРОВ:
+            - threshold: 0.1 - срабатывает когда 10% элемента становится видимым
+            - rootMargin: '0px 0px -50px 0px' - отступ снизу 50px для раннего срабатывания
+            
+            ПРЕИМУЩЕСТВА:
+            - Раннее срабатывание создает плавность анимации
+            - 10% видимости обеспечивает естественное появление
+            - Отступ снизу компенсирует возможные задержки
+        */
+        const observerOptions = {
+            threshold: 0.1,                    // Срабатывает когда 10% элемента видно
+            rootMargin: '0px 0px -50px 0px'   // Отступ снизу 50px для раннего срабатывания
+        };
+        
+        // ========================================
+        // СОЗДАНИЕ INTERSECTION OBSERVER
+        // ========================================
+        
+        /*
+            ОПИСАНИЕ:
+            - Создает наблюдатель за пересечением элементов с областью видимости
+            - Автоматически отслеживает появление элементов в viewport
+            - Эффективнее чем scroll event listener
+            
+            ПАРАМЕТРЫ:
+            - entries: массив элементов, которые пересекли порог видимости
+            - entry.isIntersecting: true если элемент стал видимым
+        */
+        const fadeObserver = new IntersectionObserver((entries) => {
+            // Обрабатываем каждый элемент, который пересек порог видимости
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Элемент стал видимым - добавляем класс для анимации появления
+                    entry.target.classList.add('fade-in-visible');
+                    console.log('Элемент появился в области видимости:', entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // ========================================
+        // ПОИСК И НАЧАЛО НАБЛЮДЕНИЯ ЗА ЭЛЕМЕНТАМИ
+        // ========================================
+        
+        // Находим все элементы с классом 'fade-in' на текущей странице
+        const fadeElements = document.querySelectorAll('.fade-in');
+        console.log(`Найдено элементов для анимации появления: ${fadeElements.length}`);
+        
+        // Начинаем наблюдение за каждым найденным элементом
+        fadeElements.forEach(element => {
+            fadeObserver.observe(element);
+            console.log('Начинаем наблюдение за элементом:', element);
+        });
+        
+        console.log('Анимации появления при скролле инициализированы');
+    }
+    
+    // ========================================
+    // ЗАПУСК АНИМАЦИЙ ПОЯВЛЕНИЯ
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Вызываем функцию инициализации при загрузке страницы
+        - Все элементы с классом 'fade-in' автоматически получают анимацию
+        - Работает для статического и динамически загруженного контента
+    */
+    
+    // Инициализируем анимации появления элементов
+    initScrollAnimations();
+    
+    // ========================================
+    // ГЛАВНАЯ КАРУСЕЛЬ (MAIN CAROUSEL)
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Интерактивный слайдер с 3 слайдами
+        - Плавные переходы между слайдами через изменение opacity
+        - Кнопки навигации (вперед/назад)
+        - Циклическое переключение (последний → первый, первый → последний)
+        - Автоматическая инициализация первого слайда
+    */
+    
+    // ========================================
+    // ИНИЦИАЛИЗАЦИЯ ПЕРЕМЕННЫХ КАРУСЕЛИ
+    // ========================================
+    
+    // Получаем основной контейнер карусели по ID
     const carousel = document.getElementById('mainCarousel');
+    
+    // Находим все слайды внутри карусели (элементы с классом 'carousel-item')
     const slides = carousel.querySelectorAll('.carousel-item');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    
+    // Получаем кнопки навигации по их ID
+    const prevBtn = document.getElementById('prevBtn');    // Кнопка "Предыдущий слайд" (❮)
+    const nextBtn = document.getElementById('nextBtn');    // Кнопка "Следующий слайд" (❯)
+    
+    // Индекс текущего активного слайда (начинаем с 0 - первый слайд)
     let currentSlide = 0;
 
-    // Функция для переключения на конкретный слайд
+    // ========================================
+    // ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ СЛАЙДОВ
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Переключает карусель на указанный слайд
+        - Управляет видимостью слайдов через CSS классы
+        - Обновляет индекс текущего слайда
+        
+        ПАРАМЕТРЫ:
+        - slideIndex: number - индекс слайда для показа (0, 1, 2)
+        
+        ПРИНЦИП РАБОТЫ:
+        1. Проходит по всем слайдам
+        2. Добавляет класс 'active' нужному слайду
+        3. Убирает класс 'active' у всех остальных слайдов
+        4. Обновляет переменную currentSlide
+    */
     function goToSlide(slideIndex) {
-        // Скрываем все слайды
+        // Проходим по всем слайдам и управляем их видимостью
         slides.forEach((slide, index) => {
             if (index === slideIndex) {
+                // Показываем нужный слайд
                 slide.classList.add('active');
+                console.log(`Показываем слайд ${index + 1}`);
             } else {
+                // Скрываем все остальные слайды
                 slide.classList.remove('active');
             }
         });
         
+        // Обновляем индекс текущего активного слайда
         currentSlide = slideIndex;
+        console.log(`Текущий активный слайд: ${currentSlide + 1}`);
     }
 
-    // Обработчики для кнопок навигации
+    // ========================================
+    // ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ КНОПОК НАВИГАЦИИ
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Обрабатывают клики по кнопкам навигации
+        - Вычисляют индекс следующего/предыдущего слайда
+        - Обеспечивают циклическое переключение
+        - Предотвращают стандартное поведение браузера
+    */
+    
+    // Обработчик для кнопки "Предыдущий слайд" (❮)
     prevBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Предотвращаем стандартное поведение браузера
+        
+        // Вычисляем индекс предыдущего слайда с циклическим переходом
+        // Формула: (текущий - 1 + количество слайдов) % количество слайдов
+        // Это обеспечивает переход от первого слайда к последнему
         const nextSlideIndex = (currentSlide - 1 + slides.length) % slides.length;
-        goToSlide(nextSlideIndex);
+        
+        console.log(`Переключаем на предыдущий слайд: ${nextSlideIndex + 1}`);
+        goToSlide(nextSlideIndex); // Переключаем на вычисленный слайд
     });
 
+    // Обработчик для кнопки "Следующий слайд" (❯)
     nextBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Предотвращаем стандартное поведение браузера
+        
+        // Вычисляем индекс следующего слайда с циклическим переходом
+        // Формула: (текущий + 1) % количество слайдов
+        // Это обеспечивает переход от последнего слайда к первому
         const nextSlideIndex = (currentSlide + 1) % slides.length;
-        goToSlide(nextSlideIndex);
+        
+        console.log(`Переключаем на следующий слайд: ${nextSlideIndex + 1}`);
+        goToSlide(nextSlideIndex); // Переключаем на вычисленный слайд
     });
 
-    // Показываем первый слайд по умолчанию
+    // ========================================
+    // ИНИЦИАЛИЗАЦИЯ КАРУСЕЛИ
+    // ========================================
+    
+    /*
+        ОПИСАНИЕ:
+        - Показываем первый слайд при загрузке страницы
+        - Обеспечиваем корректное начальное состояние
+        - Первый слайд уже имеет класс 'active' в HTML, но для надежности вызываем функцию
+    */
+    
+    // Показываем первый слайд по умолчанию (индекс 0)
     goToSlide(0);
+    console.log('Главная карусель инициализирована, показан первый слайд');
 
     // ========================================
     // КАРУСЕЛЬ КАТАЛОГА
@@ -341,17 +613,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для определения количества видимых слайдов
     function updateSlidesPerView() {
         const width = window.innerWidth;
-        if (width >= 1536) { // 2xl
+        if (width >= 1280) { // xl и больше (2xl) - 5 позиций
             slidesPerView = 5;
-        } else if (width >= 1280) { // xl
+        } else if (width >= 1024) { // lg - 4 позиции  
             slidesPerView = 4;
-        } else if (width >= 1024) { // lg
+        } else if (width >= 768) { // md - 3 позиции
             slidesPerView = 3;
-        } else if (width >= 768) { // md
+        } else if (width >= 640) { // sm - 2 позиции
             slidesPerView = 2;
-        } else { // sm и меньше
+        } else { // меньше sm - 1 позиция
             slidesPerView = 1;
         }
+        console.log(`Ширина экрана: ${width}px, видимых слайдов: ${slidesPerView}`);
     }
     
     // Функция для перехода к слайду каталога
@@ -377,6 +650,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (catalogTrack && catalogSlides.length > 0) {
         updateSlidesPerView();
         goToCatalogSlide(0);
+        console.log(`Карусель каталога инициализирована: ${catalogSlides.length} слайдов, ${slidesPerView} видимых`);
+        console.log(`Ширина контейнера: ${catalogTrack.parentElement.offsetWidth}px`);
+        console.log(`Ширина одной карточки: ${catalogSlides[0]?.offsetWidth}px`);
         
         // Автоматическая прокрутка
         let autoPlayInterval;

@@ -148,12 +148,19 @@ document.addEventListener('DOMContentLoaded', function() {
         subtree: true
     });
     
+
+    
+    // Создаем кнопку "Наверх" после инициализации эффектов
+    createScrollToTopButton();
+    
     // ========================================
-    // АНИМАЦИИ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ
+    // АНИМАЦИИ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ (FADE-IN)
     // ========================================
     
     // Функция для анимации появления элементов
     function initScrollAnimations() {
+        console.log('Инициализация анимаций появления при скролле...');
+        
         // Настройки для IntersectionObserver
         const observerOptions = {
             threshold: 0.1, // Срабатывает когда 10% элемента видно
@@ -171,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }, observerOptions);
         
-        // Находим все элементы с классом fade-in
+        // Находим все элементы с классом fade-in на текущей странице
         const fadeElements = document.querySelectorAll('.fade-in');
         console.log('Найдено элементов для анимации:', fadeElements.length);
         
@@ -179,10 +186,28 @@ document.addEventListener('DOMContentLoaded', function() {
         fadeElements.forEach(element => {
             fadeObserver.observe(element);
         });
+        
+        // Наблюдаем за динамически добавленными элементами
+        const fadeObserver2 = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1 && node.classList && node.classList.contains('fade-in')) {
+                            fadeObserver.observe(node);
+                            console.log('Новый fade-in элемент добавлен:', node);
+                        }
+                    });
+                }
+            });
+        });
+        
+        fadeObserver2.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        console.log('Анимации появления при скролле инициализированы');
     }
-    
-    // Создаем кнопку "Наверх" после инициализации эффектов
-    createScrollToTopButton();
     
     // ========================================
     // ГЛОБАЛЬНАЯ ПЛАВНАЯ ПРОКРУТКА
@@ -296,10 +321,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Глобальная плавная прокрутка инициализирована');
     }
     
-    // Инициализируем анимации появления
+    // Инициализируем все функции скролла
     initScrollAnimations();
-    
-    // Инициализируем глобальную плавную прокрутку
     initGlobalSmoothScroll();
 });
 </script>

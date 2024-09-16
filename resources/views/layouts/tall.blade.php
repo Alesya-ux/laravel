@@ -19,7 +19,8 @@
     <nav class="bg-neutral-50 flex flex-col shadow-lg shadow-gray-200/50">
         <!-- Верхняя часть header'а -->
         <div class="flex flex-col lg:flex-row items-center justify-between border-cyan-700 border-b px-4 py-2">
-            <!-- Логотип -->
+           
+        <!-- Логотип -->
             <div class="flex justify-center lg:justify-start mb-2 lg:mb-0">
                 <a href="/" class="flex items-center">
                     <img src="/pictures/logo/android-chrome-192x192.png" alt="Logo" class="h-12 lg:h-16 cursor-pointer logo-spin">
@@ -127,16 +128,83 @@
                     Главная
                 </a>
                 
+                <!-- ========================================
+                     ВЫПАДАЮЩЕЕ МЕНЮ КАТАЛОГА
+                     ======================================== -->
                 <div class="group relative">
+                    <!-- 
+                        КЛАСС "group" - создает контекст для группировки hover-эффектов
+                        КЛАСС "relative" - устанавливает относительное позиционирование для абсолютного позиционирования дочерних элементов
+                    -->
+                    
+                    <!-- ССЫЛКА-ТРИГГЕР ДЛЯ ВЫПАДАЮЩЕГО МЕНЮ -->
                     <a href="/catalog" class="nav-link p-3 hover:text-cyan-700 rounded-md transition-colors duration-200 flex items-center">
+                        <!-- Текст ссылки -->
                         Каталог
+                        
+                        <!-- СТРЕЛКА-ИНДИКАТОР ВЫПАДАЮЩЕГО МЕНЮ -->
                         <svg class="h-4 w-4 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <!-- 
+                                КЛАССЫ СТРЕЛКИ:
+                                - "h-4 w-4" - размеры стрелки (16x16px)
+                                - "ml-1" - отступ слева от текста
+                                - "transition-transform duration-200" - плавный переход для трансформации за 200ms
+                                - "group-hover:rotate-180" - поворот на 180° при наведении на родительский элемент
+                            -->
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </a>
+                    
+                    <!-- ВЫПАДАЮЩЕЕ МЕНЮ С ПОДКАТЕГОРИЯМИ -->
                     <ul class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-full left-0 z-[100] bg-white shadow-lg rounded-lg min-w-[200px] mt-1 border border-gray-200 transition-all duration-200 transform -translate-y-2 group-hover:translate-y-0">
+                        <!-- 
+                            КЛАССЫ ВЫПАДАЮЩЕГО МЕНЮ:
+                            
+                            ВИДИМОСТЬ И ПРОЗРАЧНОСТЬ:
+                            - "invisible" - изначально невидимо (не занимает место в потоке)
+                            - "group-hover:visible" - становится видимым при наведении на родительский элемент
+                            - "opacity-0" - изначально полностью прозрачно
+                            - "group-hover:opacity-100" - становится непрозрачным при наведении
+                            
+                            ПОЗИЦИОНИРОВАНИЕ:
+                            - "absolute" - абсолютное позиционирование относительно родителя
+                            - "top-full" - размещается сразу под родительским элементом
+                            - "left-0" - выравнивается по левому краю родителя
+                            - "z-[100]" - высокий z-index для правильного наложения
+                            
+                            СТИЛИЗАЦИЯ:
+                            - "bg-white" - белый фон
+                            - "shadow-lg" - большая тень для глубины
+                            - "rounded-lg" - скругленные углы
+                            - "min-w-[200px]" - минимальная ширина 200px
+                            - "mt-1" - отступ сверху 4px
+                            - "border border-gray-200" - серая рамка
+                            
+                            АНИМАЦИЯ:
+                            - "transition-all duration-200" - плавные переходы для всех свойств за 200ms
+                            - "transform -translate-y-2" - изначально смещено вверх на 8px
+                            - "group-hover:translate-y-0" - возвращается в нормальное положение при наведении
+                        -->
+                        
+                        <!-- ЦИКЛ ПО КАТАЛОГАМ - ГЕНЕРИРУЕТ ПОДМЕНЮ -->
                         @foreach($catalogs as $catalog)
-                            <li><a href="/catalog/{{$catalog->id}}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-cyan-700 transition-colors duration-200 border-b border-gray-100 last:border-b-0">{{$catalog->name}}</a></li>
+                            <li>
+                                <!-- ССЫЛКА НА ПОДКАТЕГОРИЮ -->
+                                <a href="/catalog/{{$catalog->id}}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-cyan-700 transition-colors duration-200 border-b border-gray-100 last:border-b-0">
+                                    <!-- 
+                                        КЛАССЫ ССЫЛКИ ПОДКАТЕГОРИИ:
+                                        - "block" - блочный элемент на всю ширину
+                                        - "px-4 py-3" - внутренние отступы (16px по горизонтали, 12px по вертикали)
+                                        - "text-gray-700" - цвет текста (темно-серый)
+                                        - "hover:bg-gray-50" - светло-серый фон при наведении
+                                        - "hover:text-cyan-700" - синий цвет текста при наведении
+                                        - "transition-colors duration-200" - плавные переходы цветов за 200ms
+                                        - "border-b border-gray-100" - нижняя граница для разделения элементов
+                                        - "last:border-b-0" - убирает границу у последнего элемента
+                                    -->
+                                    {{$catalog->name}}
+                                </a>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
@@ -267,16 +335,41 @@
            СТИЛИ ДЛЯ HEADER - ШАПКА САЙТА
            ======================================== */
         
-        /* Плавные переходы для всех изменений в header */
+        /* 
+            ПЛАВНЫЕ ПЕРЕХОДЫ ДЛЯ ВСЕХ ИЗМЕНЕНИЙ В HEADER
+            ===============================================
+            Обеспечивает плавность анимации при изменении состояния header'а
+            (например, при прокрутке страницы)
+        */
         .header-transition {
-            transition: all 0.3s ease-in-out; /* Переход 0.3 сек для всех свойств с плавным ускорением/замедлением */
+            transition: all 0.3s ease-in-out;                             /* 
+                                                                                Переход 0.3 сек для всех свойств
+                                                                                с плавным ускорением/замедлением
+                                                                                ease-in-out создает естественную анимацию
+                                                                            */
         }
         
-        /* Стили для зафиксированного header при прокрутке */
+        /* 
+            СТИЛИ ДЛЯ ЗАФИКСИРОВАННОГО HEADER ПРИ ПРОКРУТКЕ
+            =================================================
+            Применяются когда header становится "липким" (sticky)
+            и остается в верхней части экрана при прокрутке
+        */
         header.sticky {
-            backdrop-filter: blur(8px);                                    /* Размытие фона под header'ом на 8px */
-            background-color: rgba(250, 250, 250, 0.95);                  /* Полупрозрачный белый фон (95% непрозрачности) */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Многослойная тень для глубины */
+            backdrop-filter: blur(8px);                                    /* 
+                                                                                Размытие фона под header'ом на 8px
+                                                                                Создает эффект "стеклянного" header'а
+                                                                                с размытым содержимым страницы
+                                                                            */
+            background-color: rgba(250, 250, 250, 0.95);                  /* 
+                                                                                Полупрозрачный белый фон (95% непрозрачности)
+                                                                                Обеспечивает читаемость с легкой прозрачностью
+                                                                            */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* 
+                                                                                                        Многослойная тень для глубины
+                                                                                                        Первый слой: большая тень снизу
+                                                                                                        Второй слой: меньшая тень для объема
+                                                                                                    */
         }
         
 
@@ -285,63 +378,141 @@
            СТИЛИ ДЛЯ НАВИГАЦИОННЫХ ССЫЛОК
            ======================================== */
         
-        /* Базовые стили для навигационных ссылок */
+        /* 
+            БАЗОВЫЕ СТИЛИ ДЛЯ НАВИГАЦИОННЫХ ССЫЛОК
+            ========================================
+            Этот класс применяется ко всем навигационным ссылкам, включая ссылку "Каталог"
+            с выпадающим меню
+        */
         .nav-link {
-            position: relative;                    /* Относительное позиционирование для псевдоэлементов */
-            transition: all 0.2s ease-in-out;     /* Плавные переходы 0.2 сек для всех свойств */
+            position: relative;                    /* 
+                                                        Относительное позиционирование для псевдоэлементов
+                                                        Позволяет абсолютно позиционировать ::after элемент
+                                                    */
+            transition: all 0.2s ease-in-out, transform 0.2s ease-in-out;     /* 
+                                                        Плавные переходы 0.2 сек для всех свойств и трансформации
+                                                        ease-in-out создает плавное ускорение и замедление
+                                                    */
         }
         
-        /* Псевдоэлемент для подчеркивания ссылок */
+        /* 
+            ПСЕВДОЭЛЕМЕНТ ДЛЯ ПОДЧЕРКИВАНИЯ ССЫЛОК
+            =========================================
+            Создает анимированную линию подчеркивания, которая появляется при наведении
+            на навигационные ссылки
+        */
         .nav-link::after {
-            content: '';                          /* Пустое содержимое псевдоэлемента */
-            position: absolute;                   /* Абсолютное позиционирование относительно .nav-link */
-            bottom: 0;                            /* Размещение внизу ссылки */
-            left: 50%;                            /* Центрирование по горизонтали */
-            width: 0;                             /* Начальная ширина 0 (невидимая линия) */
-            height: 2px;                          /* Высота подчеркивания 2px */
-            background-color: #0e7490;            /* Цвет подчеркивания (cyan-700) */
-            transition: all 0.3s ease-in-out;     /* Плавный переход для анимации */
-            transform: translateX(-50%);           /* Центрирование с учетом ширины элемента */
+            content: '';                          /* 
+                                                        Пустое содержимое псевдоэлемента
+                                                        Создает невидимый элемент для стилизации
+                                                    */
+            position: absolute;                   /* 
+                                                        Абсолютное позиционирование относительно .nav-link
+                                                        Позволяет точно разместить подчеркивание
+                                                    */
+            bottom: 0;                            /* 
+                                                        Размещение внизу ссылки
+                                                        Подчеркивание будет находиться под текстом
+                                                    */
+            left: 50%;                            /* 
+                                                        Центрирование по горизонтали
+                                                        Начальная позиция по центру ссылки
+                                                    */
+            width: 0;                             /* 
+                                                        Начальная ширина 0 (невидимая линия)
+                                                        Подчеркивание изначально скрыто
+                                                    */
+            height: 2px;                          /* 
+                                                        Высота подчеркивания 2px
+                                                        Толщина линии подчеркивания
+                                                    */
+            background-color: #0e7490;            /* 
+                                                        Цвет подчеркивания (cyan-700)
+                                                        Соответствует основной цветовой схеме сайта
+                                                    */
+            transition: all 0.3s ease-in-out;     /* 
+                                                        Плавный переход для анимации
+                                                        Длительность 0.3 сек с плавным ускорением/замедлением
+                                                    */
+            transform: translateX(-50%);           /* 
+                                                        Центрирование с учетом ширины элемента
+                                                        Компенсирует left: 50% для точного центрирования
+                                                    */
         }
         
-        /* Анимация подчеркивания при наведении */
+        /* 
+            АНИМАЦИЯ ПОДЧЕРКИВАНИЯ ПРИ НАВЕДЕНИИ
+            ======================================
+            При наведении курсора на навигационную ссылку подчеркивание
+            плавно расширяется от центра к краям
+        */
         .nav-link:hover::after {
-            width: 100%;                          /* Расширение подчеркивания на всю ширину ссылки */
+            width: 100%;                          /* 
+                                                        Расширение подчеркивания на всю ширину ссылки
+                                                        Создает эффект "раскрытия" линии от центра
+                                                    */
         }
         
-        /* Стили для активных ссылок при наведении */
-        .nav-link.bg-cyan-700:hover {
-            color: white !important;              /* Белый текст при наведении на активную ссылку */
-            background-color: #0e7490 !important; /* Сохраняем цвет фона при наведении */
+        /* 
+            СТИЛИ ДЛЯ АКТИВНЫХ ССЫЛОК
+            ==========================
+            Базовые стили для активных ссылок (текущая страница)
+            и их состояния при наведении и фокусе
+        */
+        .nav-link.bg-cyan-700,
+        .nav-link.bg-cyan-700:hover,
+        .nav-link.bg-cyan-700:focus {
+            color: white !important;              /* 
+                                                        Белый текст для активных ссылок
+                                                        Обеспечивает читаемость на синем фоне
+                                                    */
+            background-color: #0e7490 !important; /* 
+                                                        Цвет фона для активных ссылок
+                                                        Поддерживаем визуальную идентификацию активной страницы
+                                                    */
         }
-        
-        /* Дополнительные стили для активных ссылок */
-        .nav-link.bg-cyan-700 {
-            color: white !important;              /* Принудительно белый текст для активных ссылок */
-        }
-        
-        /* Отключаем hover эффекты для активных ссылок */
-        .nav-link.bg-cyan-700:hover {
-            color: white !important;              /* Белый текст при наведении */
-            background-color: #0e7490 !important; /* Цвет фона при наведении */
-        }
-        
-        /* Высокий приоритет для активных ссылок */
-        a.nav-link.bg-cyan-700,
-        a.nav-link.bg-cyan-700:hover,
-        a.nav-link.bg-cyan-700:focus {
-            color: white !important;              /* Белый текст всегда */
-            background-color: #0e7490 !important; /* Цвет фона всегда */
-        }
+
+/* 
+    CSS-АНИМАЦИЯ ДЛЯ НАВИГАЦИОННЫХ ССЫЛОК ПРИ НАВЕДЕНИИ
+    =====================================================
+    Создает эффект "поднятия" ссылки при наведении курсора,
+    что добавляет интерактивности и современности интерфейсу
+*/
+.nav-link:hover {
+    transform: translateY(-2px);                  /* 
+                                                        Поднимаем ссылку на 2px вверх при наведении
+                                                        Создает эффект "всплытия" элемента
+                                                    */
+}
         
         /* ========================================
            АНИМАЦИЯ КОРЗИНЫ - ПОДПРЫГИВАНИЕ БЕЙДЖА
            ======================================== */
         
         /* Класс для анимации счетчика товаров в корзине */
-        .cart-badge {
-            animation: bounce 1s infinite;        /* Анимация подпрыгивания 1 сек, бесконечно */
-        }
+.cart-badge {
+    animation: bounce 1s infinite;        /* Анимация подпрыгивания 1 сек, бесконечно */
+}
+
+/* 
+    CSS-АНИМАЦИЯ ДЛЯ КНОПКИ КОРЗИНЫ ПРИ КЛИКЕ
+    ==========================================
+    Создает эффект "нажатия" на кнопку корзины,
+    что обеспечивает визуальную обратную связь пользователю
+*/
+a[href="/cart"] {
+    transition: transform 0.15s ease-in-out;      /* 
+                                                        Плавные переходы для трансформации
+                                                        Длительность 0.15 сек для быстрого отклика
+                                                    */
+}
+
+a[href="/cart"]:active {
+    transform: scale(0.95);                       /* 
+                                                        Уменьшаем кнопку до 95% при активном состоянии
+                                                        Создает эффект "вдавливания" кнопки
+                                                    */
+}
         
         /* Ключевые кадры для анимации подпрыгивания */
         @keyframes bounce {
@@ -382,143 +553,62 @@
         
 
         
-        /* Стили для карусели клиентов */
-        #clientCarousel {
-            overflow: hidden;
-            position: relative;
+
+        
+
+        
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
             width: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-            border-radius: 8px;
-            padding: 20px 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
         }
         
-        #logoContainer {
+        .modal.modal-open {
             display: flex;
-            animation: scroll 25s linear infinite;
-            width: max-content;
-            gap: 32px;
             align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
         }
         
-        #logoContainer img {
-            height: 100px;
-            width: auto;
-            object-fit: contain;
-            filter: grayscale(20%);
-            transition: all 0.3s ease;
+        .modal-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(8, 145, 178, 0.1);
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
         }
         
-        #logoContainer img:hover {
-            filter: grayscale(0%);
-            transform: scale(1.1);
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        /* Анимация бесконечной прокрутки */
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
             }
-            100% {
-                transform: translateX(calc(-50% - 16px));
-            }
-        }
-        
-        /* Стили для контейнера логотипов */
-        #logoContainer {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-            width: max-content;
-            position: relative; /* Для позиционирования индикатора загрузки */
-            /* Анимация будет добавлена через JavaScript при видимости */
-        }
-        
-        /* Пауза анимации при наведении */
-        #clientCarousel:hover #logoContainer {
-            animation-play-state: paused;
-        }
-        
-        /* Класс для активной анимации */
-        #logoContainer.animate {
-            animation: scroll 25s linear infinite;
-            opacity: 1;
-            transition: opacity 0.5s ease-in-out, animation 0.3s ease-in-out;
-            will-change: transform;
-        }
-        
-        /* Плавное появление анимации */
-        #logoContainer {
-            opacity: 0.8;
-            transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
-        }
-        
-        /* Индикатор загрузки анимации */
-        #logoContainer::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid #e5e7eb;
-            border-top: 2px solid #0891b2;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-        
-        #logoContainer:not(.animate)::before {
-            opacity: 1;
-        }
-        
-        /* Скрываем индикатор когда анимация активна */
-        #logoContainer.animate::before {
-            opacity: 0;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 768px) {
-            #logoContainer img {
-                height: 80px;
-            }
-            
-            #logoContainer.animate {
-                animation-duration: 20s;
-            }
-            
-            #logoContainer {
-                gap: 20px;
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
             }
         }
         
-        /* Оптимизация для устройств с высоким DPI */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            #logoContainer.animate {
-                transform: translateZ(0);
-                backface-visibility: hidden;
-            }
-        }
+
         
-        /* Принудительный запуск анимации */
-        @media (prefers-reduced-motion: no-preference) {
-            .image-slide {
-                animation-play-state: running;
-            }
-        }
-        
-        /* Немедленный запуск анимации при загрузке */
-        .image-slide {
-            animation-play-state: running !important;
-            animation-delay: 0s !important;
-        }
+
         
         /* Оптимизация для мобильных устройств */
         @media (max-width: 768px) {
@@ -527,18 +617,40 @@
             }
         }
         
-        /* Уменьшенный размер анимации */
+        /* Размер изображений для анимации */
         .image-slide {
-            width: 50% !important; /* Уменьшаем с w-3/4 до 60% */
-            height: auto !important;
-            max-width: 100% !important;
-            max-height: 100% !important;
+            width: 75%; /* Возвращаем к оригинальному размеру w-3/4 */
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Улучшенные стили для изображений в модальных окнах */
+        .modal-box img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-box img:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Автоматический размер модального окна под содержимое */
+        .modal-box {
+            width: auto !important;
+            min-width: 400px;
+            max-width: 90vw !important;
         }
         
 
        
     </style>
-<section class="rounded-lg bg-neutral-50 shadow-lg p-8 max-w-[70%] mx-auto mt-10">
+<section class="rounded-lg bg-neutral-50 shadow-lg p-8 max-w-[70%] mx-auto mt-20">
     <div class="ml-4 w-full lg:w-1/2 mb-8">
         <h2 class="text-3xl font-semibold text-gray-800">Для Связи</h2>
     </div>
@@ -583,7 +695,7 @@
         </div>
 
         <!-- Правый див - Форма обратной связи -->
-        <div class="bg-neutral-50 rounded-2xl shadow-xl p-8 hover-lift border border-cyan-700/20">
+        <div class="bg-neutral-50 rounded-2xl shadow-xl p-8 hover-lift hover:translate-x-4 transition-transform duration-300 border border-cyan-700/20 ">
             <h3 class="text-2xl font-bold text-cyan-700 mb-6">Свяжитесь с нами</h3>
             
             <div class="mb-6">
@@ -658,71 +770,45 @@
     </div>
 </section>
 
-<section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10">
+<section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-20">
     <div class="ml-4 w-full lg:w-1/2 mb-4">
         <h2 class="text-2xl lg:text-3xl font-semibold text-center lg:text-left">Клиенты</h2>
     </div>
     
-    <!-- Автоматическая карусель логотипов клиентов -->
-    <div class="relative overflow-hidden" id="clientCarousel">
-        <div class="flex py-4" id="logoContainer">
-            <!-- Первый набор логотипов -->
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/1.png" alt="Клиент 1" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/2.png" alt="Клиент 2" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/3.png" alt="Клиент 3" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/4.png" alt="Клиент 4" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/5.png" alt="Клиент 5" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/6.png" alt="Клиент 6" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/7.png" alt="Клиент 7" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/8.png" alt="Клиент 8" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <!-- Дублируем логотипы для бесконечной прокрутки -->
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/1.png" alt="Клиент 1" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/2.png" alt="Клиент 2" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/3.png" alt="Клиент 3" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/4.png" alt="Клиент 4" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/5.png" alt="Клиент 5" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/6.png" alt="Клиент 6" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/7.png" alt="Клиент 7" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
-            <div class="flex-shrink-0">
-                <img src="/pictures/klient/logo/8.png" alt="Клиент 8" class="object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110"/>
-            </div>
+    <!-- Логотипы клиентов -->
+    <div class="grid grid-cols-4 lg:grid-cols-8 gap-4 py-4">
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/1.png" alt="Клиент 1" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/2.png" alt="Клиент 2" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/3.png" alt="Клиент 3" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/4.png" alt="Клиент 4" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/5.png" alt="Клиент 5" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/6.png" alt="Клиент 6" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/7.png" alt="Клиент 7" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+        </div>
+        <div class="flex justify-center">
+            <img src="/pictures/klient/logo/8.png" alt="Клиент 8" class="h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
         </div>
     </div>
+    
+
     
     <!-- Модальные окна с отзывами клиентов -->
     <!-- Модальное окно для клиента 1 -->
     <div id="modal-client-1" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-1')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -735,7 +821,7 @@
     
     <!-- Модальное окно для клиента 2 -->
     <div id="modal-client-2" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-2')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -748,7 +834,7 @@
     
     <!-- Модальное окно для клиента 3 -->
     <div id="modal-client-3" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-3')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -761,7 +847,7 @@
     
     <!-- Модальное окно для клиента 4 -->
     <div id="modal-client-4" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-4')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -774,7 +860,7 @@
     
     <!-- Модальное окно для клиента 5 -->
     <div id="modal-client-5" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-5')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -787,7 +873,7 @@
     
     <!-- Модальное окно для клиента 6 -->
     <div id="modal-client-6" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-2xl max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-6')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -800,7 +886,7 @@
     
     <!-- Модальное окно для клиента 7 -->
     <div id="modal-client-7" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-7')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -813,7 +899,7 @@
     
     <!-- Модальное окно для клиента 8 -->
     <div id="modal-client-8" class="modal">
-        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
                 <button onclick="closeModal('modal-client-8')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
@@ -879,80 +965,70 @@
     
 
 
-    // Анимация для корзины
-    const cartButton = document.querySelector('a[href="/cart"]');
-    if (cartButton) {
-        cartButton.addEventListener('click', function(e) {
-            // Добавляем анимацию клика
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    }
+
 
     // Улучшенное мобильное меню
-    document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuButton = document.querySelector('.lg\\:hidden .dropdown button');
-        const mobileMenu = document.querySelector('.lg\\:hidden .dropdown-content');
-        
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('show');
-            });
+            document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.lg\\:hidden .dropdown button');
+            const mobileMenu = document.querySelector('.lg\\:hidden .dropdown-content');
             
-            // Закрытие меню при клике вне его
-            document.addEventListener('click', function(e) {
-                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-                    mobileMenu.classList.remove('show');
-                }
-            });
-        }
-    });
-
-            // Анимация для навигационных ссылок
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-2px)';
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('show');
                 });
                 
-                link.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
+                // Закрытие меню при клике вне его
+                document.addEventListener('click', function(e) {
+                    if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                        mobileMenu.classList.remove('show');
+                    }
                 });
-            });
+            }
             
             // Добавляем обработчики кликов для логотипов клиентов
-            const clientLogos = document.querySelectorAll('#logoContainer img');
+            const clientLogos = document.querySelectorAll('img[src*="/pictures/klient/logo/"]');
             clientLogos.forEach((logo, index) => {
                 logo.addEventListener('click', function() {
                     // Определяем номер клиента (1-8)
-                    const clientNumber = (index % 8) + 1;
+                    const clientNumber = index + 1;
                     openModal(`modal-client-${clientNumber}`);
                 });
-                
-                // Добавляем курсор-указатель для логотипов
-                logo.style.cursor = 'pointer';
             });
-            
-            // Инициализация карусели
-            initCarousel();
+
+            // Простая карусель - всего 3 строки!
+            let currentIndex = 0;
+            setInterval(() => {
+                clientLogos.forEach((logo, i) => logo.style.opacity = i === currentIndex ? '1' : '0.5');
+                currentIndex = (currentIndex + 1) % clientLogos.length;
+            }, 1000);
         });
+
+
+            
+
+        
         
         // Функция открытия модального окна
         function openModal(modalId) {
+            console.log(`Попытка открыть модальное окно: ${modalId}`);
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('modal-open');
+                console.log(`Модальное окно ${modalId} открыто`);
+            } else {
+                console.error(`Модальное окно ${modalId} не найдено`);
             }
         }
         
         // Функция закрытия модального окна
         function closeModal(modalId) {
+            console.log(`Попытка закрыть модальное окно: ${modalId}`);
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('modal-open');
+                console.log(`Модальное окно ${modalId} закрыто`);
+            } else {
+                console.error(`Модальное окно ${modalId} не найдено`);
             }
         }
         
@@ -981,115 +1057,7 @@
             }
         });
         
-        // Функция инициализации карусели
-        function initCarousel() {
-            const logoContainer = document.getElementById('logoContainer');
-            const carousel = document.getElementById('clientCarousel');
-            
-            if (logoContainer && carousel) {
-                // Добавляем обработчики для паузы при наведении
-                carousel.addEventListener('mouseenter', function() {
-                    if (logoContainer.classList.contains('animate')) {
-                        logoContainer.style.animationPlayState = 'paused';
-                    }
-                });
-                
-                carousel.addEventListener('mouseleave', function() {
-                    if (logoContainer.classList.contains('animate')) {
-                        logoContainer.style.animationPlayState = 'running';
-                    }
-                });
-                
-                // Intersection Observer для запуска анимации только при видимости
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            // Карусель стала видимой - запускаем анимацию с небольшой задержкой
-                            setTimeout(() => {
-                                logoContainer.classList.add('animate');
-                                logoContainer.style.animationPlayState = 'running';
-                                console.log('Карусель стала видимой - анимация запущена');
-                            }, 300); // 300ms задержка для плавности
-                        } else {
-                            // Карусель скрыта - останавливаем анимацию
-                            logoContainer.classList.remove('animate');
-                            logoContainer.style.animationPlayState = 'paused';
-                            console.log('Карусель скрыта - анимация остановлена');
-                        }
-                    });
-                }, { 
-                    threshold: 0.3, // Запускаем когда 30% карусели видно
-                    rootMargin: '50px' // Небольшой запас для плавности
-                });
-                
-                observer.observe(carousel);
-                
-                // Добавляем обработчики клика для логотипов
-                const logos = logoContainer.querySelectorAll('img');
-                logos.forEach((logo, index) => {
-                    logo.style.cursor = 'pointer';
-                    logo.addEventListener('click', function() {
-                        const clientNumber = (index % 8) + 1; // Получаем номер клиента (1-8)
-                        openModal(`modal-client-${clientNumber}`);
-                    });
-                    
-                    // Обработка ошибок загрузки изображений
-                    logo.addEventListener('error', function() {
-                        console.warn(`Ошибка загрузки изображения ${index + 1}`);
-                        this.style.opacity = '0.3';
-                    });
-                });
-                
-                // Проверяем поддержку Intersection Observer
-                if (!('IntersectionObserver' in window)) {
-                    console.warn('Intersection Observer не поддерживается, запускаем анимацию сразу');
-                    logoContainer.classList.add('animate');
-                }
-                
-                console.log('Карусель инициализирована с отложенным запуском');
-            } else {
-                console.error('Элементы карусели не найдены');
-            }
-        }
-        
-        // Функция инициализации слайдера изображений
-        function initImageSlider() {
-            const imageSlides = document.querySelectorAll('.image-slide');
-            
-            if (imageSlides.length > 0) {
-                // Принудительно запускаем анимацию для всех изображений
-                imageSlides.forEach((slide, index) => {
-                    // Убираем любые задержки
-                    slide.style.animationDelay = '0s';
-                    slide.style.animationPlayState = 'running';
-                    
-                    // Принудительно показываем первое изображение
-                    if (index === 0) {
-                        slide.style.opacity = '1';
-                        slide.style.animation = 'imageCycle1 12s infinite';
-                    }
-                });
-                
-                // Принудительно запускаем анимацию через небольшую задержку
-                setTimeout(() => {
-                    imageSlides.forEach(slide => {
-                        slide.style.animationPlayState = 'running';
-                    });
-                }, 50);
-            }
-        }
-        
-        // Запускаем слайдер при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            initImageSlider();
-            initCarousel();
-        });
-        
-        // Также запускаем при полной загрузке страницы
-        window.addEventListener('load', function() {
-            initImageSlider();
-            initCarousel();
-        });
+
         
 
         

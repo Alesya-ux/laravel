@@ -22,6 +22,30 @@ class Product extends Model
     }
     
     /**
+     * Связь с изображениями
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class)->ordered();
+    }
+    
+    /**
+     * Получить главное изображение
+     */
+    public function mainImage()
+    {
+        return $this->hasOne(ProductImage::class)->where('is_main', true);
+    }
+    
+    /**
+     * Получить дополнительные изображения
+     */
+    public function additionalImages()
+    {
+        return $this->hasMany(ProductImage::class)->where('is_main', false)->ordered();
+    }
+    
+    /**
      * Get the formatted price attribute (для обратной совместимости)
      */
     public function getFormattedPriceAttribute()
@@ -72,6 +96,41 @@ class Product extends Model
     public function getMaxPriceAttribute()
     {
         return $this->sizes->max('price');
+    }
+    
+    /**
+     * Получить URL главного изображения (с обратной совместимостью)
+     */
+    public function getMainImageUrlAttribute()
+    {
+        // Сначала пробуем получить из новой системы
+        $mainImage = $this->mainImage;
+        if ($mainImage) {
+            return $mainImage->image_url;
+        }
+        
+        // Если нет, используем старое поле picture
+        if ($this->picture) {
+            return asset('storage/' . $this->picture);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Получить все изображения в правильном порядке
+     */
+    public function getAllImagesOrdered()
+    {
+        return $this->images()->ordered()->get();
+    }
+    
+    /**
+     * Проверить, есть ли дополнительные изображения
+     */
+    public function hasAdditionalImages()
+    {
+        return $this->additionalImages()->count() > 0;
     }
 }
 
