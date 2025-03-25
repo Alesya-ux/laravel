@@ -96,6 +96,7 @@
                         <div class="modal-action">
                             <form method="dialog">
                                 импут
+                                кнопка
                                 <button class="btn">Close</button>
                             </form>
                         </div>
