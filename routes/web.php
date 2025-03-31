@@ -17,6 +17,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::controller(Controllers\CatalogController::class)->prefix('catalog')->group(function (){
+Route::get('/','getIndex');
+Route::get('{catalog}','getOne');
+});
+
 require __DIR__.'/auth.php';
 //всегда в конце
 Route::get('{url}',[Controllers\BaseController::class, 'getUrl']);
+

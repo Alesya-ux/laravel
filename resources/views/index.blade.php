@@ -1,25 +1,31 @@
 @extends('layouts.tall')
 @section('content')
 
-<header>
-    <div class="hero bg-base-200 min-h-200">
-        <div class="hero-content flex-col lg:flex-row-reverse">
-            <img
-                src="/pictures/maskot/"
-                class="max-w-sm rounded-lg shadow-2xl" />
-            <div>
-                <h1 class="text-5xl font-bold">АДЕНТИНА СЕРВИС</h1>
-                <p class="py-6">
-                    Защита от вирусов и бактерий: дезинфицирующее оборудование и ковры для предприятий!
-                </p>
-                <button class="btn btn-soft bg-cyan-700 text-base-200"">Каталог</button>
+
+
+    <header>
+        <div class="hero mt-10 relative overflow-hidden" style="min-h-200;">
+            <div class="hero-bg absolute top-0 left-0 w-full h-full z-0" style="background-image: url('/pictures/forma.png'); background-size: cover; background-position: center; opacity: 0.2;"></div>
+            <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
+                <img
+                    src="/pictures/maskot/maskot.png"
+                    class="max-w-sm h-96 object-cover rounded-lg " />
+                <div>
+                    <h1 class="text-5xl font-bold">АДЕНТИНА СЕРВИС</h1>
+                    <p class="py-6">
+                        Защита от вирусов и бактерий: дезинфицирующее оборудование и ковры для предприятий!
+                    </p>
+                    <button class="btn btn-soft bg-cyan-700 text-base-200">Каталог</button>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
 
-</header>
-<main class="">
-    <div class="mt-6 ml-4 w-full lg:w-1/2">
+
+
+
+    <main class="">
+    <div class="mt-10 ml-4 w-full lg:w-1/2">
         <h2 class=text-3xl font-bold text-base-200>О Нас</h2>
     </div>
     <div class="flex w-full flex-col lg:flex-row p-4 gap-4 mt-6">
@@ -27,36 +33,35 @@
         <div class="card bg-cyan-700 rounded-box grid flex-1 place-items-stretch">
             <div class="flex flex-col h-full">
                 <div class="p-4 flex-grow border-b border-base-300 flex items-center text-base-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 mr-2 text-base-200">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <img
+                        src="/pictures/iconki/dostavka2.png"/>
                    <p class="p-6 text-xl">Моментальная отгрузка</p>
                     <p class="text-xs" >Отгрузка вашего товара в течении минуты после оплаты!</p>
                 </div>
                 <div class="p-4 flex-grow border-b border-base-300 flex items-center text-base-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 mr-2 text-base-200">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                    </svg>
+                    <img
+                        src="/pictures/iconki/nalichie2.png"/>
                    <p class="p-6 text-xl">Актуальное наличие</p>
                     <p class="text-xs" >Наличие товара и все цены на сайте всегда актуальны!</p>
                 </div>
                 <div class="p-4 flex-grow flex items-center text-base-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 mr-2 text-base-200">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 6m-4.5-6H21" />
-                    </svg>
+                    <img
+                        src="/pictures/iconki/sertificat2.png"/>
                     <p class="p-6 text-xl">Комплект докуметов</p>
                     <p class="text-xs" >Полный пакет докуметов, максимально быстрая обработка заказов!</p>
                 </div>
             </div>
         </div>
         <div class="card bg-base-200 rounded-box grid flex-1 place-items-center">
-            <p class="text-left break-words max-w-xl">
+            <p class="text-left break-words max-w-full w-full p-4">
                 Мы – надежный поставщик профессиональных дезинфицирующих средств и оборудования, предназначенных для обеспечения безопасности и гигиены в вашем бизнесе.
                 В современном мире, где чистота и санитария играют ключевую роль, мы предлагаем широкий ассортимент высококачественных продуктов и передовых решений для дезинфекции помещений и оборудования любого масштаба. От небольших офисов до крупных промышленных предприятий – мы поможем вам создать безопасную и здоровую среду для ваших сотрудников и клиентов.
             </p>
         </div>
+
+
     </div>
-    <div class="stats shadow w-full mt-6">
+    <div class="stats shadow w-full mt-20">
         <div class="stat">
             <div class="stat-figure text-cyan-700">
                 <svg
@@ -110,7 +115,7 @@
     </div>
 
 
-    <div class="mt-6 ml-4 w-full lg:w-1/2">
+    <div class="mt-20 ml-4 w-full lg:w-1/2">
         <h2 class=text-3xl font-bold text-base-200>Каталог</h2>
     </div>
     <div class="overflow-x-auto mt-6  ">
