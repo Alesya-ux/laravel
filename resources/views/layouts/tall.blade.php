@@ -8,34 +8,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-neutral-50 ">
-<nav class=" bg-neutral-50 flex flex-col md:flex-row shadow-lg shadow-gray-200/50">
-    <div class="p-2 flex justify-center">
-        <img src="pictures/logo/favicon.ico" alt="Logo" class="ml-8">
+<nav class="bg-neutral-50 flex flex-col shadow-lg shadow-gray-200/50">
+    <div class="flex flex-col md:flex-row items-center justify-between p-2">
+        <!-- Логотип -->
+        <div class="flex justify-center">
+            <a href="/">
+                <img src="/pictures/logo/favicon.ico" alt="Logo" class="ml-8 cursor-pointer">
+            </a>
+        </div>
+
+
+
+        <!-- Контактные данные (в приоритете для mobile) -->
+        <div class="flex flex-col items-center justify-center md:items-end order-3 md:order-2">
+            <div>Телефон: <a href="tel:+375296133169" class="hover:text-cyan-700">+375 (29) 613-31-69</a></div>
+            <div>Адрес: <a href="https://www.google.com/maps?q=Ваш+точный+адрес" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-700">г. Минск, ул.Ваупшасова, 42А</a></div>
+            <div>Режим работы: Пн-Пт, 9:00-17:30</div>
+        </div>
+
+        <!-- Кнопки Вход/Регистрация/Кабинет (в приоритете для desktop) -->
+        <div class="flex space-x-2 justify-center md:justify-start order-2 md:order-3">
+            @guest()
+                <a href="/login" class="btn btn-soft bg-cyan-700 text-base-200">Вход</a>
+                <a href="/register" class="btn btn-soft bg-cyan-700 text-base-200">Регистрация</a>
+            @else
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a href="#" class="btn btn-soft bg-cyan-700 text-base-200" onclick="event.preventDefault(); this.closest('form').submit();">
+                        Выход
+                    </a>
+                </form>
+                <a href="/home" class="btn btn-soft bg-cyan-700 text-base-200">Кабинет</a>
+            @endguest
+        </div>
     </div>
-    <div class="md:order-2 p-2 flex space-x-2 justify-center md:justify-start">
-        @guest()
-            <a href="/login" class="btn btn-soft bg-cyan-700 text-base-200">Вход</a>
-            <a href="/register" class="btn btn-soft bg-cyan-700 text-base-200">Регистрация</a>
-        @else
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <a href="#"  class="btn btn-soft bg-cyan-700 text-base-200" onclick="event.preventDefault();  this.closest('form').submit();">
-                    Выход
-                </a>
-            </form>
-            <a href="/home" class="btn btn-soft bg-cyan-700 text-base-200">Кабинет</a>
-        @endguest
-    </div>
-    <div class=" flex px-4 items-center  max-w-screen-xl mx-auto flex-col  md:order-1 md:flex-row">
+
+    <!-- Навигационные ссылки (Главная, Каталог, и т.д.) -->
+    <div class="flex px-4 items-center max-w-screen-xl mx-auto flex-col md:flex-row order-1 md:order-1">
         <a href="/" class="p-2 hover:bg-base-200 rounded-md">Главная</a>
         <div class="dropdown">
             <div tabindex="0" role="button" class="btn m-1 p-2 hover:bg-base-200 rounded-md">Каталог</div>
-            <ul tabindex="0" class="dropdown-content z-[100] menu shadow bg-base-100 rounded-box  min-w-max">
-                <li><a href="/catalog/podcategory1" class="max-w-[200px] text-wrap">Дезковрики и антибактериальные коврики</a></li>
-                <li><a href="/catalog/podcategory2" class="max-w-[200px] text-wrap">Оборудование для дезинфекции</a></li>
-                <li><a href="/catalog/podcategory3" class="max-w-[200px] text-wrap">Дозаторы</a></li>
-                <li><a href="/catalog/podcategory4" class="max-w-[200px] text-wrap">Перекись</a></li>
-                <li><a href="/catalog/podcategory5" class="max-w-[200px] text-wrap">Преобразователь ржавчины.Обезжириватель</a></li>
+            <ul tabindex="0" class="dropdown-content z-[100] menu shadow bg-base-100 rounded-box min-w-max">
+                @foreach($catalogs as $catalog)
+                <li><a href="/catalog/{{$catalog->id}}" class="max-w-[200px] text-wrap">{{$catalog->name}}</a></li>
+                @endforeach
             </ul>
         </div>
         @if($world == 'aboute')
@@ -45,13 +61,13 @@
         @endif
 
         @if($world == 'delivery')
-            <span  class="p-2 bg-cyan-700 text-base-200 rounded-md">Доставка</span>
+            <span class="p-2 bg-cyan-700 text-base-200 rounded-md">Доставка</span>
         @else
             <a href="/delivery" class="p-2 hover:bg-base-200 rounded-md">Доставка</a>
         @endif
 
         @if($world == 'contacts')
-            <span  class="p-2 bg-cyan-700 text-base-200 rounded-md">Контакты</span>
+            <span class="p-2 bg-cyan-700 text-base-200 rounded-md">Контакты</span>
         @else
             <a href="/contacts" class="p-2 hover:bg-base-200 rounded-md">Контакты</a>
         @endif

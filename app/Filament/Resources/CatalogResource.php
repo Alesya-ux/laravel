@@ -6,6 +6,7 @@ use App\Filament\Resources\CatalogResource\Pages;
 use App\Filament\Resources\CatalogResource\RelationManagers;
 use App\Models\Catalog;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,8 +29,8 @@ class CatalogResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                Select::make('parent_id')->label('parent')->options(Catalog::WhereNull('parent_id')->pluck('name','id'))
-
+                Select::make('parent_id')->label('parent')->options(Catalog::WhereNull('parent_id')->pluck('name', 'id')),
+                FileUpload::make('picture')->directory('catalogs'),
             ]);
     }
 
@@ -37,7 +38,7 @@ class CatalogResource extends Resource
     {
         return $table
             ->columns([
-               TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('name')->sortable()->searchable(),
 
             ])
             ->filters([

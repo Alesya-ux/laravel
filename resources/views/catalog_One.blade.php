@@ -20,37 +20,61 @@
     </header>
 
 
-    <main class=>
-
+    <main >
         <div class="mt-20 ml-4 w-full lg:w-1/2">
+            <h2 class="text-3xl font-bold text-base-200">
+                @if($catalog->parent)
 
-            <h2 class="text-3xl font-bold text-base-500">Каталог</h2>
 
+                            <a href="/catalog/{{$catalog->parent->id}}" class="block py-2 px-4 rounded-md hover:bg-gray-200 active-link" data-section="section1">{{$catalog->parent->name}} </a>
+
+                @endif
+                {{$catalog->name}}</h2>
         </div>
-        <div class="mb-6 text-gray-700">
-            <p>
-                Представляем наш каталог продукции, предназначенной для поддержания чистоты и гигиены на вашем предприятии.
-                Здесь вы найдете широкий ассортимент дезинфицирующих средств, оборудования и аксессуаров, необходимых для
-                обеспечения безопасности и соответствия санитарным нормам.
-            </p>
-            <p>
-                Мы предлагаем эффективные решения для различных отраслей, включая пищевую промышленность, здравоохранение,
-                образование и многие другие. Наши продукты разработаны с учетом самых высоких требований к качеству и
-                безопасности.
-            </p>
-        </div>
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div class="card bg-base-100 image-full shadow-sm">
-                <figure><img src="pictures/karusel/lega.png" alt="Преобразователь.Обезжириватель" /></figure>
-                <div class="card-body">
-                    <h3 class="card-title">{{$catalog->name}}</h3>
 
+        <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row">
+            <!-- Левое меню -->
+            <div class="w-full md:w-1/4 bg-gray-100 rounded-md p-4 mb-4 md:mb-0 md:mr-4 shadow-md">  <!-- Added shadow-md -->
+                @if($catalog->childs)
+                <ul class="space-y-2">
+
+                        @foreach($catalog->childs as $child)
+                    <li>
+
+                        <a href="/catalog/{{$child->id}}" class="block py-2 px-4 rounded-md hover:bg-gray-200 active-link" data-section="section1">
+                            {{$child->name}}
+                        </a>
+                    </li>
+                        @endforeach
+                    @endif
+
+                </ul>
+
+            </div>
+            <!-- Правое поле для текста -->
+            <div class="w-full md:w-3/4 bg-white rounded-md p-4 shadow-md"> <!-- Added shadow-md -->
+                <h2 class="text-lg font-semibold mb-2" id="section1-title"></h2>
+                <div id="section1-content" class="text-gray-700 leading-relaxed">
+                    @if($catalog->products)
+                        <div>
+                            @foreach($catalog->products as $product)
+                                <div>
+                                    <a href="{{asset('storage/'. $product->picture)}}">
+                                        <img src="{{asset('storage/'. $product->picture)}}" alt="{{$product->name}}">
+                                        </a>
+                                        <div><p>
+                                                <a href="{{asset('storage/'. $product->picture)}}">{{$product->name}}</a>
+                                            </p></div>
+                                        <div><p>€ {{$product->price}}</p></div>
+
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
-
         </div>
-
 
     </main>
 

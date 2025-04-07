@@ -15,7 +15,7 @@
                     <p class="py-6">
                         Защита от вирусов и бактерий: дезинфицирующее оборудование и ковры для предприятий!
                     </p>
-                    <button class="btn btn-soft bg-cyan-700 text-base-200">Каталог</button>
+                    <a href="/catalog" class="btn btn-soft bg-cyan-700 text-base-200">Каталог</a>
                 </div>
             </div>
         </div>
