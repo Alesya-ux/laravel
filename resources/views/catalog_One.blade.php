@@ -2,27 +2,13 @@
 @section('content')
 
     <header>
-        <div class="hero mt-10 relative overflow-hidden" style="min-h-200;">
-            <div class="hero-bg absolute top-0 left-0 w-full h-full z-0" style="background-image: url('/pictures/forma.png'); background-size: cover; background-position: center; opacity: 0.2;"></div>
-            <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                <img
-                    src="/pictures/maskot/maskot.png"
-                    class="max-w-sm h-96 object-cover rounded-lg " />
-                <div>
-                    <h1 class="text-5xl font-bold">АДЕНТИНА СЕРВИС</h1>
-                    <p class="py-6">
-                        Защита от вирусов и бактерий: дезинфицирующее оборудование и ковры для предприятий!
-                    </p>
-                    <button class="btn btn-soft bg-cyan-700 text-base-200">Каталог</button>
-                </div>
-            </div>
-        </div>
+
     </header>
 
 
-    <main >
-        <div class="mt-20 ml-4 w-full lg:w-1/2">
-            <h2 class="text-3xl font-bold text-base-200">
+    <main class="bg-white " >
+        <div class="mt-10 ml-4 w-full lg:w-1/2  ">
+            <h2 class="text-3xl font-bold text-base-400">
                 @if($catalog->parent)
 
 
@@ -33,16 +19,16 @@
         </div>
 
 
-        <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row">
-            <!-- Левое меню -->
-            <div class="w-full md:w-1/4 bg-gray-100 rounded-md p-4 mb-4 md:mb-0 md:mr-4 shadow-md">  <!-- Added shadow-md -->
+        <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row  ">
+
+            <div class="w-full md:w-1/4 bg-gray-100 rounded-md p-4 mb-4 md:mb-0 md:mr-4 shadow-md">
                 @if($catalog->childs)
                 <ul class="space-y-2">
 
                         @foreach($catalog->childs as $child)
                     <li>
 
-                        <a href="/catalog/{{$child->id}}" class="block py-2 px-4 rounded-md hover:bg-gray-200 active-link" data-section="section1">
+                        <a href="/catalog/{{$child->id}}" class="block py-2 px-4 rounded-md hover:bg-cyan-700 hover:text-base-200 active-link" data-section="section1">
                             {{$child->name}}
                         </a>
                     </li>
@@ -52,28 +38,34 @@
                 </ul>
 
             </div>
-            <!-- Правое поле для текста -->
-            <div class="w-full md:w-3/4 bg-white rounded-md p-4 shadow-md"> <!-- Added shadow-md -->
-                <h2 class="text-lg font-semibold mb-2" id="section1-title"></h2>
-                <div id="section1-content" class="text-gray-700 leading-relaxed">
-                    @if($catalog->products)
-                        <div>
-                            @foreach($catalog->products as $product)
-                                <div>
-                                    <a href="{{asset('storage/'. $product->picture)}}">
-                                        <img src="{{asset('storage/'. $product->picture)}}" alt="{{$product->name}}">
-                                        </a>
-                                        <div><p>
-                                                <a href="{{asset('storage/'. $product->picture)}}">{{$product->name}}</a>
-                                            </p></div>
-                                        <div><p>€ {{$product->price}}</p></div>
 
+            <div class="w-full lg:w-3/4">
+                @if($catalog->products && count($catalog->products) > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @foreach($catalog->products as $product)
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                                <a href="{{ asset('storage/' . $product->picture) }}">
+                                    <img src="{{ asset('storage/' . $product->picture) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover object-center">
+                                </a>
+                                <div class="p-4">
+                                    <h3 class="text-md font-semibold text-gray-800">
+                                        <a href="{{ asset('storage/' . $product->picture) }}" class="hover:text-cyan-700 transition duration-200">{{ $product->name }}</a>
+                                    </h3>
+                                    <p class="mt-2 text-gray-600"> {{ $product->price }} рублей</p>
                                 </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                @else
+
+                    <div class="bg-white rounded-md p-6 shadow-md">
+                        <p class="text-gray-500">В этой категории нет товаров.</p>
+                    </div>
+                @endif
             </div>
+
+
         </div>
 
     </main>

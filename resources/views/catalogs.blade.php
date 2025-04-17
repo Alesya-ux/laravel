@@ -5,65 +5,40 @@
 
     </header>
 
-
-    <main class=>
-
-        <div class="mt-20 ml-4 w-full lg:w-1/2">
-            <h2 class=text-3xl font-bold text-base-200>Каталог</h2>
-        </div>
-        <div class="container mx-auto px-4 py-8">
-            <div class="flex flex-row items-center gap-4">
-                <!-- Изображение -->
-                <div class="flex-shrink-0">
-                    <img src="pictures/dinamika/korzina.png" alt="Описание изображения" class="h-auto object-contain max-w-full">
-                </div>
-                <!-- Текст -->
-                <div class="text-gray-700 leading-relaxed">
-                    <p class="text-xl">
-                        Представляем наш каталог продукции, предназначенной для поддержания чистоты и гигиены на вашем предприятии.
-                        Здесь вы найдете широкий ассортимент дезинфицирующих средств, оборудования и аксессуаров, необходимых для
-                        обеспечения безопасности и соответствия санитарным нормам.
-                    </p>
-                    <p class="mt-4">
-                        Мы предлагаем эффективные решения для различных отраслей, включая пищевую промышленность, здравоохранение,
-                        образование и многие другие. Наши продукты разработаны с учетом самых высоких требований к качеству и
-                        безопасности.
-                    </p>
-                </div>
-            </div>
-        </div>
+    <main class="bg-white">
+        <div class="container mx-auto px-4 py-12 mt-10">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Каталог</h2>
 
 
-        <div class="container mx-auto px-4 py-8">
-            <div class="px-[100px]">
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @foreach($catalogs as $catalog)
-                        <div class="card bg-base-100 image-full shadow-sm">
 
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="{{asset('catalog/'.$catalog->id)}}">{{$catalog->name}}</a></h3>
-                                <div class="card-actions justify-end">
-                                    @if($catalog->childs)
-                                        <ul class="space-y-2">
-
-                                            @foreach($catalog->childs as $child)
-                                                <li>
-
-                                                    <a href="/catalog/{{$child->id}}" class="block py-2 px-4 rounded-md hover:bg-gray-200 active-link" data-section="section1">
-                                                        {{$child->name}}
-                                                    </a>
-                                                </li>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  ">
+                @foreach($catalogs as $catalog)
+                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                                <a href="{{asset('catalog/'.$catalog->id)}}" class="hover:text-cyan-700 transition duration-200">{{$catalog->name}}</a>
+                            </h3>
+                            @if($catalog->childs)
+                                <ul class="space-y-2">
+                                    @foreach($catalog->childs as $child)
+                                        <li>
+                                            <a
+                                                href="/catalog/{{$child->id}}"
+                                                class="block py-2 px-4 rounded-md hover:bg-cyan-700 hover:text-base-200 transition duration-200 text-gray-700"
+                                            >
+                                                {{$child->name}}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             </div>
+
+
         </div>
-
-
     </main>
 
 
