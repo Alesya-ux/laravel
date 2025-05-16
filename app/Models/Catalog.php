@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Catalog extends Model
 {
-    protected $fillable = ['name', 'parent_id', 'picture'];
+    protected $fillable = ['name', 'parent_id', 'picture', 'description'];
 
 
 public function childs()

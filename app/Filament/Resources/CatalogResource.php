@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Columns\TextColumn;
@@ -29,6 +30,7 @@ class CatalogResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
+                Textarea::make('description')->required(),
                 Select::make('parent_id')->label('parent')->options(Catalog::WhereNull('parent_id')->pluck('name', 'id')),
                 FileUpload::make('picture')->directory('catalogs'),
             ]);
@@ -39,6 +41,7 @@ class CatalogResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('parent_id')->sortable()->searchable(),
 
             ])
             ->filters([

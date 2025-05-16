@@ -23,6 +23,10 @@ Route::controller(Controllers\CatalogController::class)->prefix('catalog')->grou
     Route::get('{catalog}/add_product', 'getAddProduct');
     Route::get('{catalog}/detach_product', 'getDetachProduct');
 });
+Route::controller(Controllers\ProductsController::class)->prefix('product')->group(function () {
+    Route::get('/', 'getIndex');
+    Route::get('{product}', 'getOne');
+});
 
 require __DIR__ . '/auth.php';
 //всегда в конце
