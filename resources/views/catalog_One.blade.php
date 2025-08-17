@@ -8,10 +8,10 @@
 
     <main>
 
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10">
+        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
 
             <div class="ml-4 w-full lg:w-1/2  ">
-                <h2 class="text-3xl font-semibold">
+                <h2 class="text-3xl font-semibold text-fade-in">
                     @if($catalog->parent)
                         <a href="/catalog/{{$catalog->parent->id}}"
                            class="block py-2 px-4 rounded-md hover:bg-gray-200 active-link"
@@ -24,23 +24,22 @@
                     фильтр
                 </aside><!-- Фильтр -->
                 <div class="container mx-auto ">
-                    <div class="bg-white rounded-lg shadow-xl p-6"> Описание</div>
+                    
                     <article class="w-full mt-6">
                         @if($catalog->products && count($catalog->products) > 0)
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($catalog->products as $product)
-                                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                                    <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover hover-lift">
                                         <a href="/product/{{$product->id}}">
                                             <img src="{{ asset('storage/' . $product->picture) }}"
                                                  alt="{{ $product->name }}"
-                                                 class="w-full h-48 object-cover object-center">
+                                                 class="w-full h-48 object-cover object-center img-hover">
                                         </a>
                                         <div class="p-4">
                                             <h3 class="text-base font-medium">
                                                 <a href="/product/{{$product->id}}"
                                                    class="hover:text-cyan-700 transition duration-200">{{ $product->name }}</a>
                                             </h3>
-                                            <p class="mt-2 text-sm"> {{ $product->price }} рублей</p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -51,11 +50,11 @@
                             </div>
                         @endif
                     </article>
-                </div> <!-- Добавить блок описания -->
+                </div>
             </div>
         </section>
 
-        <aside class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10">
+        <aside class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
             <div class="collapse bg-base-100 border-base-300 border mt-2 ">
                 <input type="checkbox"/>
                 <div class="collapse-title font-semibold">Дезковрик или дезбарье?</div>

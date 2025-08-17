@@ -16,6 +16,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Маршрут для корзины
+Route::get('/cart', function () {
+    $catalogs = \App\Models\Catalog::whereNull('parent_id')->get();
+    $world = 'cart';
+    return view('cart', compact('catalogs', 'world'));
+})->name('cart');
+
+// Маршрут для доставки
+Route::get('/delivery', function () {
+    $catalogs = \App\Models\Catalog::whereNull('parent_id')->get();
+    $world = 'delivery';
+    return view('delivery', compact('catalogs', 'world'));
+})->name('delivery');
 
 Route::controller(Controllers\CatalogController::class)->prefix('catalog')->group(function () {
     Route::get('/', 'getIndex');
@@ -23,10 +36,13 @@ Route::controller(Controllers\CatalogController::class)->prefix('catalog')->grou
     Route::get('{catalog}/add_product', 'getAddProduct');
     Route::get('{catalog}/detach_product', 'getDetachProduct');
 });
+
 Route::controller(Controllers\ProductsController::class)->prefix('product')->group(function () {
     Route::get('/', 'getIndex');
     Route::get('{product}', 'getOne');
 });
+
+
 
 require __DIR__ . '/auth.php';
 //всегда в конце

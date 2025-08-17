@@ -10,26 +10,35 @@ class CatalogController extends Controller
 {
     public function getIndex()
     {
-
-       $catalogs = Catalog::whereNull('parent_id')->orderBy('id')->get();
-       return view('catalogs', compact('catalogs'));
-
+        // Загружаем подкатегории и товары для каждой категории
+        $catalogs = Catalog::whereNull('parent_id')
+            ->with(['childs', 'products'])
+            ->orderBy('id')
+            ->get();
+        $world = 'catalog';
+        
+        return view('catalogs', compact('catalogs', 'world'));
     }
-public  function getOne(Catalog $catalog){
-        return view('catalog_one', compact(var_name: 'catalog'));
-}
-    public  function postUserInterests(){
+    
+    public function getOne(Catalog $catalog){
+        $catalogs = Catalog::whereNull('parent_id')->orderBy('id')->get();
+        $world = 'catalog';
+        
+        return view('catalog_one', compact('catalog', 'catalogs', 'world'));
+    }
+    
+    public function postUserInterests(){
         abort_if(!\Illuminate\Support\Facades\Auth::user(), 403, 'Need authorization');
     }
-    public  function getAddProduct(Request $request, Catalog $catalog){
+    
+    public function getAddProduct(Request $request, Catalog $catalog){
         abort_if(!$request->product_id, 404,'Product_id is empty');
        // dd($catalog, $request->all());
         $catalog->products()->syncWithoutDetaching($request->product_id);
         return redirect('catalog/'. $catalog->id);
-
-
-}
-    public  function getDetachProduct(Request $request, Catalog $catalog){
+    }
+    
+    public function getDetachProduct(Request $request, Catalog $catalog){
         $catalog->products()->detach($request->product_id);
         return redirect('catalog/'. $catalog->id);
     }

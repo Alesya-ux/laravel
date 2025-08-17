@@ -9,39 +9,147 @@
     <body>
 
     <main>
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-semibold">Каталог</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <h2 class="text-3xl font-semibold text-fade-in p-6 mt-2">Каталог</h2>
+        <section class="rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-xl p-6 max-w-[95%] mx-auto  fade-in section-shadow">
+           
+        <div class="container mx-auto px-4">
+                
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach($catalogs as $catalog)
-                        <div class="relative bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 mt-2 overflow-hidden">
-                            <img src="{{ asset('storage/' . $catalog->picture) }}" alt="{{ $catalog->name }}" class="absolute inset-0 w-full h-full object-cover opacity-20">
-                            <div class="p-6 relative z-10">
-                                <p class="text-sm font-medium">
-                                    <a href="{{ asset('catalog/' . $catalog->id) }}"
-                                       class="hover:text-cyan-700 transition duration-200">{{ $catalog->name }}</a>
-                                </p>
-                                @if($catalog->products)
-                                    <ul class="space-y-2 mt-2">
-                                        @foreach($catalog->products as $product)
-                                            <li>
-                                                <a href="/catalog/{{ $product->id }}"
-                                                   class="block py-2 px-4 rounded-md hover:bg-cyan-700 hover:text-base-200 transition duration-200 text-gray-700 text-sm relative z-10">
-                                                    {{ $product->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                        <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
+                            <!-- Изображение -->
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="{{ asset('storage/' . $catalog->picture) }}" 
+                                     alt="{{ $catalog->name }}" 
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 right-4">
+                                    <h3 class="text-xl font-bold text-white mb-2">{{ $catalog->name }}</h3>
+
+                                </div>
+                            </div>
+                            
+                            <!-- Контент -->
+                            <div class="p-6">
+                                @if($catalog->childs && count($catalog->childs) > 0)
+                                    <div class="mb-4">
+                                        <p class="text-sm text-gray-500 mb-3">Подкатегории:</p>
+                                        <div class="space-y-2">
+                                            @foreach($catalog->childs->take(3) as $child)
+                                                <div class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                                    <div class="w-2 h-2 bg-cyan-500 rounded-full"></div>
+                                                    <a href="/catalog/{{ $child->id }}" 
+                                                       class="text-sm text-gray-700 hover:text-cyan-600 transition-colors duration-200 flex-1">
+                                                        {{ $child->name }}
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                            @if(count($catalog->childs) > 3)
+                                                <div class="text-xs text-gray-400 text-center pt-2">
+                                                    И ещё {{ count($catalog->childs) - 3 }} подкатегорий
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @elseif($catalog->products && count($catalog->products) > 0)
+                                    <div class="mb-4">
+                                        <p class="text-sm text-gray-500 mb-3">Доступные товары:</p>
+                                        <div class="space-y-2">
+                                            @foreach($catalog->products->take(3) as $product)
+                                                <div class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                                    <div class="w-2 h-2 bg-cyan-500 rounded-full"></div>
+                                                    <a href="/product/{{ $product->id }}" 
+                                                       class="text-sm text-gray-700 hover:text-cyan-600 transition-colors duration-200 flex-1">
+                                                        {{ $product->name }}
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                            @if(count($catalog->products) > 3)
+                                                <div class="text-xs text-gray-400 text-center pt-2">
+                                                    И ещё {{ count($catalog->products) - 3 }} товаров
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">Товары в разработке</p>
+                                    </div>
                                 @endif
+                                
+                                <!-- Кнопка перехода -->
+                                <div class="mt-6">
+                                    <a href="/catalog/{{ $catalog->id }}" 
+                                       class="btn bg-cyan-700 hover:bg-cyan-600 text-white w-full">
+                                        Перейти в категорию
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     @endforeach
-                </div> <!-- В подкатегории не правильно выводит-->
+                </div>
             </div>
         </section>
 
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10">
-        </section> <!-- Что-то добавить -->
+        <section class="rounded-lg bg-neutral-50 shadow-lg p-6 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Левая колонка - описание -->
+                        <div class="prose prose-gray max-w-none">
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                <strong>АДЕНТИНА СЕРВИС</strong> — первый дилер дезинфекционных решений в Беларуси, предлагающий широкий ассортимент дезковриков, дезбарьеров и многослойных липких ковриков.
+                            </p>
+                            
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                Наша продукция разработана высококвалифицированными специалистами с соблюдением современных стандартов дезинфекции и подходит для всех направлений пищевой промышленности.
+                            </p>
+                            
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                Наша продукция отличается износоустойчивостью, прочностью, эстетичностью и экономичностью. Дезковрики совместимы с различными дезинфекционными средствами.
+                            </p>
+                            
+                            <p class="text-gray-700 leading-relaxed">
+                                В нашем ассортименте представлены: дезковрики, дезбарьеры, многослойные липкие коврики, генераторы холодного и горячего тумана, локтевые дозаторы и перекись водорода в техническом и медицинском варианте.
+                            </p>
+                        </div>
+                        
+                        <!-- Правая колонка - подпункты -->
+                        <div class="bg-white rounded-lg p-6 shadow-sm">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Ключевые направления</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span class="text-gray-700">Мясопереработка</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span class="text-gray-700">Молочная промышленность</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span class="text-gray-700">Хлебобулочные и кондитерские производства</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span class="text-gray-700">Птицеводство и животноводство</span>
+                                </li>
+                            </ul>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 

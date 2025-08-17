@@ -11,14 +11,18 @@ class BaseController extends Controller
 
     public function getIndex()
     {
-    $catalogs=Catalog::whereNull('parent_id')->get();
-    
-     return view('index',compact('catalogs'));
-
+        $catalogs = Catalog::whereNull('parent_id')->get();
+        $world = 'home';
+        
+        return view('index', compact('catalogs', 'world'));
     }
+    
     public function getUrl($url = 'about')
     {
-        $maintext = Maimtext::where('url',$url)->first();
-        return view('article', compact('url','maintext'));
+        $catalogs = Catalog::whereNull('parent_id')->get();
+        $maintext = Maimtext::where('url', $url)->first();
+        $world = $url;
+        
+        return view('article', compact('url', 'maintext', 'catalogs', 'world'));
     }
 }

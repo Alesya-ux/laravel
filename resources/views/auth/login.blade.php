@@ -34,7 +34,7 @@
                 </a>
             @endif
 
-                <x-primary-button class="ms-3 bg-cyan-500 hover:bg-cyan-700 text-white">
+                <x-primary-button class="ms-3 bg-cyan-500 hover:bg-cyan-700 text-white btn-animate ripple">
                     {{ __('Вход') }}
                 </x-primary-button>
         </div>
