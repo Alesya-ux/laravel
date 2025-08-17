@@ -6,10 +6,9 @@
         <meta name="keywords" content="ключевое, слово, разделенное, запятыми">
     </header> <!-- Добавить SEO -->
 
-    <body>
-
     <main>
-    <h2 class="text-3xl font-semibold text-fade-in p-6 mt-2">Каталог</h2>
+        <h2 class="text-3xl font-semibold text-gray-800 p-6 mt-2" style="display: block !important; visibility: visible !important; opacity: 1 !important;">Каталог</h2>
+        
         <section class="rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-xl p-6 max-w-[95%] mx-auto  fade-in section-shadow">
            
         <div class="container mx-auto px-4">
@@ -19,10 +18,10 @@
                     @foreach($catalogs as $catalog)
                         <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
                             <!-- Изображение -->
-                            <div class="relative h-48 overflow-hidden">
+                            <div class="relative h-56 overflow-hidden bg-white">
                                 <img src="{{ asset('storage/' . $catalog->picture) }}" 
                                      alt="{{ $catalog->name }}" 
-                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                     class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                 <div class="absolute bottom-4 left-4 right-4">
                                     <h3 class="text-xl font-bold text-white mb-2">{{ $catalog->name }}</h3>
@@ -97,54 +96,54 @@
             </div>
         </section>
 
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-6 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
+        <section class="rounded-lg bg-gray-50 shadow-sm p-6 max-w-[95%] mx-auto mt-8 fade-in section-shadow">
             <div class="container mx-auto px-4">
                 <div class="max-w-6xl mx-auto">
                     
-                    
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Левая колонка - описание -->
-                        <div class="prose prose-gray max-w-none">
-                            <p class="text-gray-700 leading-relaxed mb-4">
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-medium text-gray-700 mb-3">О компании</h4>
+                            <p class="text-gray-600 leading-relaxed text-sm">
                                 <strong>АДЕНТИНА СЕРВИС</strong> — первый дилер дезинфекционных решений в Беларуси, предлагающий широкий ассортимент дезковриков, дезбарьеров и многослойных липких ковриков.
                             </p>
                             
-                            <p class="text-gray-700 leading-relaxed mb-4">
+                            <p class="text-gray-600 leading-relaxed text-sm">
                                 Наша продукция разработана высококвалифицированными специалистами с соблюдением современных стандартов дезинфекции и подходит для всех направлений пищевой промышленности.
                             </p>
                             
-                            <p class="text-gray-700 leading-relaxed mb-4">
+                            <p class="text-gray-600 leading-relaxed text-sm">
                                 Наша продукция отличается износоустойчивостью, прочностью, эстетичностью и экономичностью. Дезковрики совместимы с различными дезинфекционными средствами.
-                            </p>
-                            
-                            <p class="text-gray-700 leading-relaxed">
-                                В нашем ассортименте представлены: дезковрики, дезбарьеры, многослойные липкие коврики, генераторы холодного и горячего тумана, локтевые дозаторы и перекись водорода в техническом и медицинском варианте.
                             </p>
                         </div>
                         
-                        <!-- Правая колонка - подпункты -->
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Ключевые направления</h4>
-                            <ul class="space-y-3">
-                                <li class="flex items-start space-x-3">
-                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
-                                    <span class="text-gray-700">Мясопереработка</span>
-                                </li>
-                                <li class="flex items-start space-x-3">
-                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
-                                    <span class="text-gray-700">Молочная промышленность</span>
-                                </li>
-                                <li class="flex items-start space-x-3">
-                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
-                                    <span class="text-gray-700">Хлебобулочные и кондитерские производства</span>
-                                </li>
-                                <li class="flex items-start space-x-3">
-                                    <span class="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
-                                    <span class="text-gray-700">Птицеводство и животноводство</span>
-                                </li>
-                            </ul>
+                        <!-- Правая колонка - направления -->
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-medium text-gray-700 mb-3">Ключевые направления</h4>
+                            <div class="grid grid-cols-1 gap-2">
+                                <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                                    <span>Мясопереработка</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                                    <span>Молочная промышленность</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                                    <span>Хлебобулочные и кондитерские производства</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                                    <span>Птицеводство и животноводство</span>
+                                </div>
+                            </div>
                             
-                            
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <p class="text-xs text-gray-500">
+                                    В ассортименте: дезковрики, дезбарьеры, липкие коврики, генераторы тумана, дозаторы, перекись водорода.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,7 +151,5 @@
         </section>
 
     </main>
-
-    </body>
 
 @endsection
