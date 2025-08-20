@@ -84,10 +84,11 @@
                                 <input type="number" id="quantity" min="1" value="1" 
                                        class="w-20 text-center p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <button id="increase-quantity" class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-cyan-50 hover:border-cyan-600 transition-all duration-200">
-                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                </button>
+                                    <svg class="w-5 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-cyan-50 hover:border-cyan-600 transition-all duration-200">
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                    </button>
                             </div>
                             
                         </div>

@@ -191,30 +191,48 @@
            АНИМАЦИЯ СМЕНЫ ИЗОБРАЖЕНИЙ
            ======================================== */
         
+        /* Первое изображение должно быть видно сразу при загрузке */
+        .image-slide:first-child {
+            opacity: 1 !important;
+            animation-play-state: running;
+        }
+        
         .image-slide {
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+            animation-fill-mode: both;
+            animation-delay: 0s;
+            will-change: opacity;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
         
         @keyframes imageCycle1 {
-            0%, 15% { opacity: 1; } /* 0-1.8 секунды - первая картинка */
-            20%, 80% { opacity: 0; } /* 2.4-9.6 секунды - скрыта */
-            85%, 100% { opacity: 1; } /* 10.2-12 секунды - первая картинка */
+            0%, 12.5% { opacity: 1; } /* 0-1.5 секунды - первая картинка */
+            16.67%, 100% { opacity: 0; } /* 2-12 секунды - скрыта */
         }
         
         @keyframes imageCycle2 {
-            0%, 15% { opacity: 0; } /* 0-1.8 секунды - скрыта */
-            20%, 30% { opacity: 1; } /* 2.4-3.6 секунды - вторая картинка */
-            35%, 45% { opacity: 0; } /* 4.2-5.4 секунды - скрыта */
-            50%, 60% { opacity: 1; } /* 6-7.2 секунды - вторая картинка */
-            65%, 80% { opacity: 0; } /* 7.8-9.6 секунды - скрыта */
+            0%, 12.5% { opacity: 0; } /* 0-1.5 секунды - скрыта */
+            16.67%, 29.17% { opacity: 1; } /* 2-3.5 секунды - вторая картинка */
+            33.33%, 100% { opacity: 0; } /* 4-12 секунды - скрыта */
         }
         
         @keyframes imageCycle3 {
-            0%, 30% { opacity: 0; } /* 0-3.6 секунды - скрыта */
-            35%, 45% { opacity: 1; } /* 4.2-5.4 секунды - третья картинка */
-            50%, 60% { opacity: 0; } /* 6-7.2 секунды - скрыта */
-            65%, 75% { opacity: 1; } /* 7.8-9 секунды - третья картинка */
-            80%, 85% { opacity: 0; } /* 9.6-10.2 секунды - скрыта */
+            0%, 29.17% { opacity: 0; } /* 0-3.5 секунды - скрыта */
+            33.33%, 45.83% { opacity: 1; } /* 4-5.5 секунды - третья картинка */
+            50%, 100% { opacity: 0; } /* 6-12 секунды - скрыта */
+        }
+        
+        @keyframes imageCycle4 {
+            0%, 45.83% { opacity: 0; } /* 0-5.5 секунды - скрыта */
+            50%, 62.5% { opacity: 1; } /* 6-7.5 секунды - четвертая картинка */
+            66.67%, 100% { opacity: 0; } /* 8-12 секунды - скрыта */
+        }
+        
+        @keyframes imageCycle5 {
+            0%, 62.5% { opacity: 0; } /* 0-7.5 секунды - скрыта */
+            66.67%, 79.17% { opacity: 1; } /* 8-9.5 секунды - пятая картинка */
+            83.33%, 100% { opacity: 0; } /* 10-12 секунды - скрыта */
         }
         
 
@@ -422,6 +440,34 @@
             }
         }
         
+        /* Принудительный запуск анимации */
+        @media (prefers-reduced-motion: no-preference) {
+            .image-slide {
+                animation-play-state: running;
+            }
+        }
+        
+        /* Немедленный запуск анимации при загрузке */
+        .image-slide {
+            animation-play-state: running !important;
+            animation-delay: 0s !important;
+        }
+        
+        /* Оптимизация для мобильных устройств */
+        @media (max-width: 768px) {
+            .image-slide {
+                transition: opacity 0.15s ease-in-out;
+            }
+        }
+        
+        /* Уменьшенный размер анимации */
+        .image-slide {
+            width: 50% !important; /* Уменьшаем с w-3/4 до 60% */
+            height: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
+        
 
        
     </style>
@@ -431,28 +477,40 @@
     </div>
 
                 <!-- Основной контент с двумя дивами -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch contact-container">
         
         <!-- Левый див - Картинка -->
         <div class="relative group">
             <div class="relative overflow-hidden rounded-2xl shadow-2xl hover-lift bg-white p-8 flex items-center justify-center h-full">
                 <img 
-                    src="/pictures/maskot/obrat1.png" 
+                    src="/pictures/obratnay/obratnay1.png" 
                     alt="Свяжитесь с нами" 
-                    class="w-3/4 h-auto object-contain image-slide absolute opacity-1"
+                    class="w-3/4 h-auto object-contain image-slide absolute opacity-100"
                     style="animation: imageCycle1 12s infinite;"
                 >
                 <img 
-                    src="/pictures/maskot/obrat2.png" 
+                    src="/pictures/obratnay/obratnay2.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
                     style="animation: imageCycle2 12s infinite;"
                 >
                 <img 
-                    src="/pictures/maskot/obrat3.png" 
+                    src="/pictures/obratnay/obratnay3.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
                     style="animation: imageCycle3 12s infinite;"
+                >
+                <img 
+                    src="/pictures/obratnay/obratnay4.png" 
+                    alt="Свяжитесь с нами" 
+                    class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                    style="animation: imageCycle4 12s infinite;"
+                >
+                <img 
+                    src="/pictures/obratnay/obratnay5.png" 
+                    alt="Свяжитесь с нами" 
+                    class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                    style="animation: imageCycle5 12s infinite;"
                 >
             </div>
         </div>
@@ -900,6 +958,43 @@
                 observer.observe(carousel);
             }
         }
+        
+        // Функция инициализации слайдера изображений
+        function initImageSlider() {
+            const imageSlides = document.querySelectorAll('.image-slide');
+            
+            if (imageSlides.length > 0) {
+                // Принудительно запускаем анимацию для всех изображений
+                imageSlides.forEach((slide, index) => {
+                    // Убираем любые задержки
+                    slide.style.animationDelay = '0s';
+                    slide.style.animationPlayState = 'running';
+                    
+                    // Принудительно показываем первое изображение
+                    if (index === 0) {
+                        slide.style.opacity = '1';
+                        slide.style.animation = 'imageCycle1 12s infinite';
+                    }
+                });
+                
+                // Принудительно запускаем анимацию через небольшую задержку
+                setTimeout(() => {
+                    imageSlides.forEach(slide => {
+                        slide.style.animationPlayState = 'running';
+                    });
+                }, 50);
+            }
+        }
+        
+        // Запускаем слайдер при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initImageSlider();
+        });
+        
+        // Также запускаем при полной загрузке страницы
+        window.addEventListener('load', function() {
+            initImageSlider();
+        });
         
 
         
