@@ -15,8 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use App\Models\ProductSize;
 
 
 class ProductResource extends Resource
@@ -32,8 +34,26 @@ class ProductResource extends Resource
                 FileUpload::make('picture')->directory('products'),
                 TextInput::make('name')->columnSpanFull(),
                 RichEditor::make('description')->columnSpanFull(),
-                TextInput::make('size'),
-                TextInput::make('price'),
+                
+                // Система размеров с ценами
+                Repeater::make('sizes')
+                    ->relationship('sizes')
+                    ->schema([
+                        TextInput::make('size')
+                            ->label('Размер')
+                            ->required()
+                            ->placeholder('Например: 50*50*3'),
+                        TextInput::make('price')
+                            ->label('Цена')
+                            ->required()
+                            ->numeric()
+                            ->prefix('руб')
+                            ->placeholder('0.00'),
+                    ])
+                    ->columns(2)
+                    ->addActionLabel('Добавить размер')
+                    ->collapsible()
+                    ->defaultItems(1),
 
             ]);
     }
@@ -44,8 +64,26 @@ class ProductResource extends Resource
             ->columns([
                 ImageColumn::make('picture'),
                 TextColumn::make('name'),
-                TextColumn::make('size'),
-                TextColumn::make('price'),
+                TextColumn::make('sizes_count')
+                    ->label('Количество размеров')
+                    ->counts('sizes')
+                    ->badge(),
+                TextColumn::make('min_price')
+                    ->label('Цена от')
+                    ->formatStateUsing(function ($record) {
+                        if ($record->sizes->count() > 0) {
+                            return number_format($record->min_price, 2, ',', ' ') . ' руб';
+                        }
+                        return $record->price ? number_format((float)$record->price, 2, ',', ' ') . ' руб' : 'Цена не указана';
+                    }),
+                TextColumn::make('max_price')
+                    ->label('Цена до')
+                    ->formatStateUsing(function ($record) {
+                        if ($record->sizes->count() > 0) {
+                            return number_format($record->max_price, 2, ',', ' ') . ' руб';
+                        }
+                        return '-';
+                    }),
 
             ])
             ->filters([

@@ -53,8 +53,12 @@
 
                         <!-- Цена -->
                         <div class="mb-6">
-                            <div class="text-3xl font-bold text-red-600 mb-1">
-                                {{ number_format((float)$product->price, 0, ',', ' ') }} BY
+                            <div class="text-3xl font-bold text-red-600 mb-1" id="current-price">
+                                @if(count($sizes_with_prices) > 0)
+                                    {{ number_format(array_values($sizes_with_prices)[0], 2, ',', ' ') }} руб
+                                @else
+                                    {{ $product->formatted_price }}
+                                @endif
                             </div>
                             <div class="text-sm text-gray-600">За 1 шт.</div>
                         </div>
@@ -72,7 +76,7 @@
                         <!-- Выбор количества и итоговая сумма -->
                         <div class="mb-6">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm text-gray-600">В количестве на</span>
+                                <span class="text-sm text-gray-600">В количестве</span>
                                 
                             </div>
                             <div class="flex items-center space-x-3">
@@ -84,13 +88,19 @@
                                 <input type="number" id="quantity" min="1" value="1" 
                                        class="w-20 text-center p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <button id="increase-quantity" class="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-cyan-50 hover:border-cyan-600 transition-all duration-200">
-                                    <svg class="w-5 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-cyan-50 hover:border-cyan-600 transition-all duration-200">
+                                    
                                         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                         </svg>
                                     </button>
                             </div>
                             
+                            <!-- Итоговая сумма -->
+                            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-semibold text-gray-800" id="total-amount">
+                                    Итого: 0 BY
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Кнопка добавления в корзину -->
@@ -121,6 +131,22 @@
                 </div>
             </div>
         </aside>
+        <aside class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
+            <div class="collapse bg-base-100 border-base-300 border mt-2 ">
+                <input type="checkbox"/>
+                <div class="collapse-title font-semibold">?</div>
+                <div class="collapse-content text-sm">
+                    Click the "Sign Up" button in the top right corner and follow the registration process.
+                </div>
+            </div>
+            <div class="collapse bg-base-100 border-base-300 border mt-2 ">
+                <input type="checkbox"/>
+                <div class="collapse-title font-semibold">?</div>
+                <div class="collapse-content text-sm">
+                    Click the "Sign Up" button in the top right corner and follow the registration process.
+                </div>
+            </div>
+        </aside><!-- Добавить блок для вопросов -->
 
     </main>
 
@@ -130,18 +156,46 @@
             const quantityInput = document.getElementById('quantity');
             const decreaseBtn = document.getElementById('decrease-quantity');
             const increaseBtn = document.getElementById('increase-quantity');
-            const basePrice = {{ (float)$product->price }};
+            const sizesDropdown = document.getElementById('sizes-dropdown');
+            const currentPriceElement = document.getElementById('current-price');
             
-            function updateTotal() {
-                const quantity = parseInt(quantityInput.value);
-                const total = basePrice * quantity;
-                // Обновляем отображение суммы
-                const totalElement = document.querySelector('.text-lg.font-semibold.text-gray-800');
-                if (totalElement) {
-                    totalElement.textContent = 'сумму ' + total.toLocaleString('ru-RU') + ' BY';
+            // Данные о ценах по размерам
+            const sizesWithPrices = @json($sizes_with_prices);
+            
+            // Функция для обновления цены при смене размера
+            function updatePrice() {
+                const selectedSize = sizesDropdown.value;
+                if (sizesWithPrices[selectedSize]) {
+                    const price = parseFloat(sizesWithPrices[selectedSize]);
+                    currentPriceElement.textContent = price.toLocaleString('ru-RU', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + ' руб';
+                    updateTotal();
                 }
             }
             
+            // Функция для обновления общей суммы
+            function updateTotal() {
+                const selectedSize = sizesDropdown.value;
+                const quantity = parseInt(quantityInput.value);
+                
+                if (sizesWithPrices[selectedSize]) {
+                    const price = parseFloat(sizesWithPrices[selectedSize]);
+                    const total = price * quantity;
+                    
+                    // Обновляем отображение итоговой суммы
+                    const totalElement = document.getElementById('total-amount');
+                    if (totalElement) {
+                        totalElement.textContent = 'Итого: ' + total.toLocaleString('ru-RU', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) + ' BY';
+                    }
+                }
+            }
+            
+            // Обработчики событий для кнопок количества
             decreaseBtn.addEventListener('click', function() {
                 if (quantityInput.value > 1) {
                     quantityInput.value = parseInt(quantityInput.value) - 1;
@@ -154,7 +208,12 @@
                 updateTotal();
             });
             
+            // Обработчики событий
             quantityInput.addEventListener('input', updateTotal);
+            sizesDropdown.addEventListener('change', updatePrice);
+            
+            // Инициализация при загрузке страницы
+            updateTotal();
         });
     </script>
 

@@ -30,6 +30,46 @@ body {
     scroll-behavior: smooth;
 }
 
+/* Улучшенные стили для модальных окон */
+.modal {
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(8, 145, 178, 0.1);
+    position: relative;
+}
+
+/* Анимация появления модального окна */
+.modal.show .modal-box {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Стили для изображений в модальных окнах */
+.modal-box img {
+    transition: all 0.3s ease;
+}
+
+.modal-box img:hover {
+    transform: scale(1.02);
+}
+
 /* ========================================
    АНИМАЦИИ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ
    ======================================== */
@@ -63,6 +103,17 @@ body {
         width: 45px;
         height: 45px;
         font-size: 18px;
+    }
+    
+    .modal-box {
+        padding: 1.5rem;
+        margin: 1rem;
+        max-width: calc(100vw - 2rem);
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .modal-box h3 {
+        font-size: 1.5rem;
     }
 }
 
@@ -217,6 +268,98 @@ body {
     opacity: .3;
     transition: 0s;
 }
+
+/* ========================================
+   АДАПТИВНАЯ КАРУСЕЛЬ КАТАЛОГА
+   ======================================== */
+
+/* Основные стили карусели */
+.catalog-carousel {
+    position: relative;
+    width: 100%;
+}
+
+.catalog-track {
+    display: flex;
+    width: 100%;
+}
+
+.catalog-slide {
+    width: calc(20% - 0.5rem); /* 5 позиций на экране */
+    min-width: 200px;
+}
+
+/* Адаптивность для разных размеров экрана */
+@media (max-width: 1536px) { /* 2xl */
+    .catalog-slide {
+        width: calc(20% - 0.5rem); /* 5 позиций */
+    }
+}
+
+@media (max-width: 1280px) { /* xl */
+    .catalog-slide {
+        width: calc(25% - 0.5rem); /* 4 позиции */
+    }
+}
+
+@media (max-width: 1024px) { /* lg */
+    .catalog-slide {
+        width: calc(33.333% - 0.5rem); /* 3 позиции */
+    }
+}
+
+@media (max-width: 768px) { /* md */
+    .catalog-slide {
+        width: calc(50% - 0.5rem); /* 2 позиции */
+    }
+}
+
+@media (max-width: 640px) { /* sm */
+    .catalog-slide {
+        width: calc(100% - 0.5rem); /* 1 позиция */
+    }
+}
+
+/* Стили для карточек */
+.catalog-slide .card {
+    height: 320px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .catalog-slide .card {
+        height: 280px;
+    }
+}
+
+@media (max-width: 640px) {
+    .catalog-slide .card {
+        height: 300px;
+    }
+}
+
+/* Ограничение текста */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Анимации для карточек */
+.catalog-slide .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+
 </style>
 
 

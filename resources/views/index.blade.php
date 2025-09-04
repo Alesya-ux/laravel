@@ -21,7 +21,7 @@
 
 .carousel-container {
     position: relative;
-    height: 350px;
+    height: 450px;
     overflow: hidden;
 }
 
@@ -92,12 +92,10 @@
                     <div class="hero relative overflow-hidden h-full">
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/1.png'); background-size: cover; background-position: center; opacity: 0.2;"></div>
-                        <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                            <div class="text-center lg:text-left">
-                                <h1 class="text-4xl font-bold text-gray-800">АДЕНТИНА СЕРВИС</h1>
-                                <p class="py-4 text-lg font-semibold text-gray-700">
-                                    Защита от вирусов и бактерий: дезинфицирующее оборудование и ковры для предприятий!
-                                </p>
+                        <div class="hero-content flex-col lg:flex-row-reverse relative z-10 ">
+                            <div class="px-20">
+                                <h1 class="text-7xl font-bold text-gray-800 ">Профессиональные дезинфицирующие средства и оборудование</h1>
+                                
                                 <div class="flex justify-end">
                                     <a href="/catalog" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Каталог</a>
                                 </div>
@@ -112,13 +110,13 @@
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/2.jpg'); background-size: cover; background-position: center; opacity: 0.2;"></div>
                         <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                            <div class="text-center lg:text-left">
-                                <h1 class="text-4xl font-bold text-gray-800">Дезинфицирующее оборудование</h1>
-                                <p class="py-4 text-lg font-semibold text-gray-700">
+                            <div class="">
+                                <h1 class="text-7xl font-bold text-gray-800">Дезинфицирующее оборудование</h1>
+                                <p class="py-4 text-2xl font-semibold text-gray-700">
                                     Профессиональные решения для дезинфекции: от портативных устройств до промышленных систем!
                                 </p>
                                 <div class="flex justify-end">
-                                    <a href="/catalog" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Узнать больше</a>
+                                    <a href="/catalog/2" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Узнать больше</a>
                                 </div>
                             </div>
                         </div>
@@ -131,13 +129,13 @@
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
                              style="background-image: url('/pictures/glavnaya/3.jpg'); background-size: cover; background-position: center; opacity: 0.2;"></div>
                         <div class="hero-content flex-col lg:flex-row-reverse relative z-10">
-                            <div class="text-center lg:text-left">
-                                <h1 class="text-4xl font-bold text-gray-800">Антибактериальные ковры</h1>
-                                <p class="py-4 text-lg font-semibold text-gray-700">
+                            <div class="">
+                                <h1 class="text-7xl font-bold text-gray-800">Антибактериальные ковры</h1>
+                                <p class="py-4 text-2xl font-semibold text-gray-700">
                                     Инновационные ковры с антибактериальными свойствами для безопасной среды в вашем помещении!
                                 </p>
                                 <div class="flex justify-end">
-                                    <a href="/catalog" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Выбрать ковер</a>
+                                    <a href="/catalog/1" class="btn bg-[#F44336] hover:bg-[#D32F2F] text-white animate-pulse shadow-lg px-4 py-2 text-sm font-semibold">Выбрать ковер</a>
                                 </div>
                             </div>
                         </div>
@@ -255,26 +253,37 @@
             </div>
         </section>
 
-        <section class="rounded-lg bg-neutral-50 max-w-[95%] mx-auto shadow-lg p-4 mt-10 fade-in"><!-- Нужно добавить еще категорий товара , и чтоб она крутилась-->
+        <section class="rounded-lg bg-neutral-50 max-w-[95%] mx-auto shadow-lg p-4 mt-10 fade-in">
             <div class="ml-4 w-full lg:w-1/2">
-                <h2 class="text-3xl font-semibold">Каталог</h2>
+                <h2 class="text-3xl font-semibold text-gray-800">Каталог</h2>
             </div>
-            <article class="overflow-x-auto mt-2">
-                <div class="flex snap-x snap-mandatory space-x-4 p-4">
-                    @foreach($catalogs as $catalog)
-                        <div class="card bg-base-200 image-full w-80 shadow-sm snap-start hover-lift">
-                            <figure><img src="/storage/{{$catalog->picture}}" alt="dez"/></figure>
-                            <div class="card-body ">
-                                <h3 class="text-2xl font-medium">{{$catalog->name}}</h3>
-                                <p class="text-sm">{{$catalog->description}}</p>
-                                <div class="card-actions justify-end">
-                                    <a href="/catalog/{{$catalog->id}}" class="btn btn-soft bg-cyan-700 text-base-200">Подробнее</a>
+            
+            <!-- Адаптивная карусель каталога -->
+            <div class="relative mt-6">
+                <!-- Контейнер карусели -->
+                <div class="catalog-carousel overflow-hidden">
+                    <div class="catalog-track flex transition-transform duration-500 ease-in-out" id="catalogTrack">
+                        @foreach($catalogs as $catalog)
+                            <div class="catalog-slide flex-shrink-0">
+                                <div class="card bg-base-200 image-full shadow-lg hover-lift transition-all duration-300 group mx-2">
+                                    <figure class="relative overflow-hidden">
+                                        <img src="/storage/{{$catalog->picture}}" alt="{{$catalog->name}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                    </figure>
+                                    <div class="card-body p-4">
+                                        <h3 class="text-xl font-semibold text-white mb-2 line-clamp-2">{{$catalog->name}}</h3>
+                                        <p class="text-sm text-gray-200 mb-4 line-clamp-3">{{$catalog->description}}</p>
+                                        <div class="card-actions justify-end">
+                                            <a href="/catalog/{{$catalog->id}}" class="btn btn-primary bg-cyan-700 hover:bg-cyan-600 text-white border-0 transition-all duration-300 hover:scale-105">
+                                                Подробнее
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
-            </article>
+            </div>
         </section>
     </main>
 
@@ -318,5 +327,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Показываем первый слайд по умолчанию
     goToSlide(0);
+
+    // ========================================
+    // КАРУСЕЛЬ КАТАЛОГА
+    // ========================================
+    
+    const catalogTrack = document.getElementById('catalogTrack');
+    const catalogSlides = document.querySelectorAll('.catalog-slide');
+    
+    let currentCatalogSlide = 0;
+    let slidesPerView = 5; // По умолчанию 5 позиций
+    
+    // Функция для определения количества видимых слайдов
+    function updateSlidesPerView() {
+        const width = window.innerWidth;
+        if (width >= 1536) { // 2xl
+            slidesPerView = 5;
+        } else if (width >= 1280) { // xl
+            slidesPerView = 4;
+        } else if (width >= 1024) { // lg
+            slidesPerView = 3;
+        } else if (width >= 768) { // md
+            slidesPerView = 2;
+        } else { // sm и меньше
+            slidesPerView = 1;
+        }
+    }
+    
+    // Функция для перехода к слайду каталога
+    function goToCatalogSlide(slideIndex) {
+        if (slideIndex < 0 || slideIndex >= Math.ceil(catalogSlides.length / slidesPerView)) {
+            return;
+        }
+        
+        currentCatalogSlide = slideIndex;
+        const translateX = -(slideIndex * slidesPerView * (100 / slidesPerView));
+        catalogTrack.style.transform = `translateX(${translateX}%)`;
+    }
+    
+    // Обработчик изменения размера окна
+    window.addEventListener('resize', function() {
+        updateSlidesPerView();
+        // Сбрасываем к первому слайду при изменении размера
+        currentCatalogSlide = 0;
+        goToCatalogSlide(0);
+    });
+    
+    // Инициализация карусели каталога
+    if (catalogTrack && catalogSlides.length > 0) {
+        updateSlidesPerView();
+        goToCatalogSlide(0);
+        
+        // Автоматическая прокрутка
+        let autoPlayInterval;
+        
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                const nextSlide = (currentCatalogSlide + 1) % Math.ceil(catalogSlides.length / slidesPerView);
+                goToCatalogSlide(nextSlide);
+            }, 5000); // 5 секунд
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        }
+        
+        // Запускаем автопрокрутку
+        startAutoPlay();
+        
+        // Останавливаем автопрокрутку при наведении
+        catalogTrack.addEventListener('mouseenter', stopAutoPlay);
+        catalogTrack.addEventListener('mouseleave', startAutoPlay);
+    }
 });
 </script>

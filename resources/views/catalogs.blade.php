@@ -7,16 +7,16 @@
     </header> <!-- Добавить SEO -->
 
     <main>
-        <h2 class="text-3xl font-semibold text-gray-800 p-6 mt-2" style="display: block !important; visibility: visible !important; opacity: 1 !important;">Каталог</h2>
+        <h2 class="text-3xl font-semibold text-gray-800 p-6" style="display: block !important; visibility: visible !important; opacity: 1 !important;">Каталог</h2> 
         
-        <section class="rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-xl p-6 max-w-[95%] mx-auto  fade-in section-shadow">
-           
-        <div class="container mx-auto px-4">
+        <section class=" py-4 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-xl max-w-[95%] mx-auto  fade-in section-shadow   ">
+          
+        <div class="container mx-auto px-4 ">
                 
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach($catalogs as $catalog)
-                        <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
+                        <div class=" group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
                             <!-- Изображение -->
                             <div class="relative h-56 overflow-hidden bg-white">
                                 <img src="{{ asset('storage/' . $catalog->picture) }}" 
@@ -30,10 +30,10 @@
                             </div>
                             
                             <!-- Контент -->
-                            <div class="p-6">
+                            <div class="p-6 ">
                                 @if($catalog->childs && count($catalog->childs) > 0)
                                     <div class="mb-4">
-                                        <p class="text-sm text-gray-500 mb-3">Подкатегории:</p>
+                                        
                                         <div class="space-y-2">
                                             @foreach($catalog->childs->take(3) as $child)
                                                 <div class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
@@ -53,7 +53,7 @@
                                     </div>
                                 @elseif($catalog->products && count($catalog->products) > 0)
                                     <div class="mb-4">
-                                        <p class="text-sm text-gray-500 mb-3">Доступные товары:</p>
+                                        
                                         <div class="space-y-2">
                                             @foreach($catalog->products->take(3) as $product)
                                                 <div class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200">
@@ -96,59 +96,7 @@
             </div>
         </section>
 
-        <section class="rounded-lg bg-gray-50 shadow-sm p-6 max-w-[95%] mx-auto mt-8 fade-in section-shadow">
-            <div class="container mx-auto px-4">
-                <div class="max-w-6xl mx-auto">
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Левая колонка - описание -->
-                        <div class="space-y-4">
-                            <h4 class="text-lg font-medium text-gray-700 mb-3">О компании</h4>
-                            <p class="text-gray-600 leading-relaxed text-sm">
-                                <strong>АДЕНТИНА СЕРВИС</strong> — первый дилер дезинфекционных решений в Беларуси, предлагающий широкий ассортимент дезковриков, дезбарьеров и многослойных липких ковриков.
-                            </p>
-                            
-                            <p class="text-gray-600 leading-relaxed text-sm">
-                                Наша продукция разработана высококвалифицированными специалистами с соблюдением современных стандартов дезинфекции и подходит для всех направлений пищевой промышленности.
-                            </p>
-                            
-                            <p class="text-gray-600 leading-relaxed text-sm">
-                                Наша продукция отличается износоустойчивостью, прочностью, эстетичностью и экономичностью. Дезковрики совместимы с различными дезинфекционными средствами.
-                            </p>
-                        </div>
-                        
-                        <!-- Правая колонка - направления -->
-                        <div class="space-y-4">
-                            <h4 class="text-lg font-medium text-gray-700 mb-3">Ключевые направления</h4>
-                            <div class="grid grid-cols-1 gap-2">
-                                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                                    <span>Мясопереработка</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                                    <span>Молочная промышленность</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                                    <span>Хлебобулочные и кондитерские производства</span>
-                                </div>
-                                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                                    <span>Птицеводство и животноводство</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4 pt-4 border-t border-gray-200">
-                                <p class="text-xs text-gray-500">
-                                    В ассортименте: дезковрики, дезбарьеры, липкие коврики, генераторы тумана, дозаторы, перекись водорода.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
     </main>
 

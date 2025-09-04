@@ -127,16 +127,16 @@
                     Главная
                 </a>
                 
-                <div class="dropdown">
-                    <div tabindex="0" role="button" class="nav-link p-3  hover:text-cyan-700 rounded-md transition-colors duration-200 flex items-center">
+                <div class="group relative">
+                    <a href="/catalog" class="nav-link p-3 hover:text-cyan-700 rounded-md transition-colors duration-200 flex items-center">
                         Каталог
-                        <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-4 w-4 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
-                    </div>
-                    <ul tabindex="0" class="dropdown-content z-[100] menu shadow bg-neutral-50 rounded-box min-w-max mt-1">
+                    </a>
+                    <ul class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-full left-0 z-[100] bg-white shadow-lg rounded-lg min-w-[200px] mt-1 border border-gray-200 transition-all duration-200 transform -translate-y-2 group-hover:translate-y-0">
                         @foreach($catalogs as $catalog)
-                            <li><a href="/catalog/{{$catalog->id}}" class="max-w-[200px] text-wrap hover:text-cyan-700 transition-colors duration-200">{{$catalog->name}}</a></li>
+                            <li><a href="/catalog/{{$catalog->id}}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-cyan-700 transition-colors duration-200 border-b border-gray-100 last:border-b-0">{{$catalog->name}}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -207,32 +207,32 @@
         }
         
         @keyframes imageCycle1 {
-            0%, 12.5% { opacity: 1; } /* 0-1.5 секунды - первая картинка */
-            16.67%, 100% { opacity: 0; } /* 2-12 секунды - скрыта */
+            0%, 12.5% { opacity: 1; } /* 0-0.75 секунды - первая картинка */
+            16.67%, 100% { opacity: 0; } /* 1-6 секунды - скрыта */
         }
         
         @keyframes imageCycle2 {
-            0%, 12.5% { opacity: 0; } /* 0-1.5 секунды - скрыта */
-            16.67%, 29.17% { opacity: 1; } /* 2-3.5 секунды - вторая картинка */
-            33.33%, 100% { opacity: 0; } /* 4-12 секунды - скрыта */
+            0%, 12.5% { opacity: 0; } /* 0-0.75 секунды - скрыта */
+            16.67%, 29.17% { opacity: 1; } /* 1-1.75 секунды - вторая картинка */
+            33.33%, 100% { opacity: 0; } /* 2-6 секунды - скрыта */
         }
         
         @keyframes imageCycle3 {
-            0%, 29.17% { opacity: 0; } /* 0-3.5 секунды - скрыта */
-            33.33%, 45.83% { opacity: 1; } /* 4-5.5 секунды - третья картинка */
-            50%, 100% { opacity: 0; } /* 6-12 секунды - скрыта */
+            0%, 29.17% { opacity: 0; } /* 0-1.75 секунды - скрыта */
+            33.33%, 45.83% { opacity: 1; } /* 2-2.75 секунды - третья картинка */
+            50%, 100% { opacity: 0; } /* 3-6 секунды - скрыта */
         }
         
         @keyframes imageCycle4 {
-            0%, 45.83% { opacity: 0; } /* 0-5.5 секунды - скрыта */
-            50%, 62.5% { opacity: 1; } /* 6-7.5 секунды - четвертая картинка */
-            66.67%, 100% { opacity: 0; } /* 8-12 секунды - скрыта */
+            0%, 45.83% { opacity: 0; } /* 0-2.75 секунды - скрыта */
+            50%, 62.5% { opacity: 1; } /* 3-3.75 секунды - четвертая картинка */
+            66.67%, 100% { opacity: 0; } /* 4-6 секунды - скрыта */
         }
         
         @keyframes imageCycle5 {
-            0%, 62.5% { opacity: 0; } /* 0-7.5 секунды - скрыта */
-            66.67%, 79.17% { opacity: 1; } /* 8-9.5 секунды - пятая картинка */
-            83.33%, 100% { opacity: 0; } /* 10-12 секунды - скрыта */
+            0%, 62.5% { opacity: 0; } /* 0-3.75 секунды - скрыта */
+            66.67%, 79.17% { opacity: 1; } /* 4-4.75 секунды - пятая картинка */
+            83.33%, 100% { opacity: 0; } /* 5-6 секунды - скрыта */
         }
         
 
@@ -423,9 +423,65 @@
             }
         }
         
+        /* Стили для контейнера логотипов */
+        #logoContainer {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            width: max-content;
+            position: relative; /* Для позиционирования индикатора загрузки */
+            /* Анимация будет добавлена через JavaScript при видимости */
+        }
+        
         /* Пауза анимации при наведении */
         #clientCarousel:hover #logoContainer {
             animation-play-state: paused;
+        }
+        
+        /* Класс для активной анимации */
+        #logoContainer.animate {
+            animation: scroll 25s linear infinite;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out, animation 0.3s ease-in-out;
+            will-change: transform;
+        }
+        
+        /* Плавное появление анимации */
+        #logoContainer {
+            opacity: 0.8;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+        
+        /* Индикатор загрузки анимации */
+        #logoContainer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #0891b2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        
+        #logoContainer:not(.animate)::before {
+            opacity: 1;
+        }
+        
+        /* Скрываем индикатор когда анимация активна */
+        #logoContainer.animate::before {
+            opacity: 0;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Адаптивность для мобильных устройств */
@@ -434,9 +490,20 @@
                 height: 80px;
             }
             
+            #logoContainer.animate {
+                animation-duration: 20s;
+            }
+            
             #logoContainer {
                 gap: 20px;
-                animation-duration: 20s;
+            }
+        }
+        
+        /* Оптимизация для устройств с высоким DPI */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            #logoContainer.animate {
+                transform: translateZ(0);
+                backface-visibility: hidden;
             }
         }
         
@@ -486,31 +553,31 @@
                     src="/pictures/obratnay/obratnay1.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-100"
-                    style="animation: imageCycle1 12s infinite;"
+                    style="animation: imageCycle1 6s infinite;"
                 >
                 <img 
                     src="/pictures/obratnay/obratnay2.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
-                    style="animation: imageCycle2 12s infinite;"
+                    style="animation: imageCycle2 6s infinite;"
                 >
                 <img 
                     src="/pictures/obratnay/obratnay3.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
-                    style="animation: imageCycle3 12s infinite;"
+                    style="animation: imageCycle3 6s infinite;"
                 >
                 <img 
                     src="/pictures/obratnay/obratnay4.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
-                    style="animation: imageCycle4 12s infinite;"
+                    style="animation: imageCycle4 6s infinite;"
                 >
                 <img 
                     src="/pictures/obratnay/obratnay5.png" 
                     alt="Свяжитесь с нами" 
                     class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
-                    style="animation: imageCycle5 12s infinite;"
+                    style="animation: imageCycle5 6s infinite;"
                 >
             </div>
         </div>
@@ -655,104 +722,104 @@
     <!-- Модальные окна с отзывами клиентов -->
     <!-- Модальное окно для клиента 1 -->
     <div id="modal-client-1" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-1')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-1')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/1.png" alt="Отзыв клиента 1" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/1.png" alt="Отзыв клиента 1" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 2 -->
     <div id="modal-client-2" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-2')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-2')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/2.png" alt="Отзыв клиента 2" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/2.png" alt="Отзыв клиента 2" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 3 -->
     <div id="modal-client-3" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-3')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-3')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/3.png" alt="Отзыв клиента 3" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/3.png" alt="Отзыв клиента 3" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 4 -->
     <div id="modal-client-4" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-4')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-4')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/4.png" alt="Отзыв клиента 4" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/4.png" alt="Отзыв клиента 4" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 5 -->
     <div id="modal-client-5" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-5')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-5')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/5.png" alt="Отзыв клиента 5" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/5.png" alt="Отзыв клиента 5" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 6 -->
     <div id="modal-client-6" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-6')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-6')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/6.png" alt="Отзыв клиента 6" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/6.png" alt="Отзыв клиента 6" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 7 -->
     <div id="modal-client-7" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-7')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-7')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/7.png" alt="Отзыв клиента 7" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/7.png" alt="Отзыв клиента 7" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
     
     <!-- Модальное окно для клиента 8 -->
     <div id="modal-client-8" class="modal">
-        <div class="modal-box max-w-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-8')" class="btn btn-sm btn-circle btn-ghost">✕</button>
+        <div class="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
+                <button onclick="closeModal('modal-client-8')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
             </div>
             <div class="text-center">
-                <img src="/pictures/klient/otzivi/8.png" alt="Отзыв клиента 8" class="max-w-full h-auto mx-auto rounded-lg shadow-lg"/>
+                <img src="/pictures/klient/otzivi/8.png" alt="Отзыв клиента 8" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
             </div>
         </div>
     </div>
@@ -920,42 +987,68 @@
             const carousel = document.getElementById('clientCarousel');
             
             if (logoContainer && carousel) {
-                // Добавляем плавную анимацию
-                logoContainer.style.transition = 'transform 0.5s ease-in-out';
-                
-                // Обработчик для паузы при наведении
+                // Добавляем обработчики для паузы при наведении
                 carousel.addEventListener('mouseenter', function() {
-                    logoContainer.style.animationPlayState = 'paused';
+                    if (logoContainer.classList.contains('animate')) {
+                        logoContainer.style.animationPlayState = 'paused';
+                    }
                 });
                 
                 carousel.addEventListener('mouseleave', function() {
-                    logoContainer.style.animationPlayState = 'running';
+                    if (logoContainer.classList.contains('animate')) {
+                        logoContainer.style.animationPlayState = 'running';
+                    }
                 });
                 
-                // Добавляем индикатор загрузки
-                logoContainer.style.opacity = '0';
-                setTimeout(() => {
-                    logoContainer.style.opacity = '1';
-                    logoContainer.style.transition = 'opacity 0.5s ease-in-out';
-                }, 100);
-                
-                // Добавляем плавное появление анимации
-                setTimeout(() => {
-                    logoContainer.style.animation = 'scroll 25s linear infinite';
-                }, 500);
-                
-                // Обработчик для сброса анимации при видимости
+                // Intersection Observer для запуска анимации только при видимости
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            logoContainer.style.animationPlayState = 'running';
+                            // Карусель стала видимой - запускаем анимацию с небольшой задержкой
+                            setTimeout(() => {
+                                logoContainer.classList.add('animate');
+                                logoContainer.style.animationPlayState = 'running';
+                                console.log('Карусель стала видимой - анимация запущена');
+                            }, 300); // 300ms задержка для плавности
                         } else {
+                            // Карусель скрыта - останавливаем анимацию
+                            logoContainer.classList.remove('animate');
                             logoContainer.style.animationPlayState = 'paused';
+                            console.log('Карусель скрыта - анимация остановлена');
                         }
                     });
-                }, { threshold: 0.1 });
+                }, { 
+                    threshold: 0.3, // Запускаем когда 30% карусели видно
+                    rootMargin: '50px' // Небольшой запас для плавности
+                });
                 
                 observer.observe(carousel);
+                
+                // Добавляем обработчики клика для логотипов
+                const logos = logoContainer.querySelectorAll('img');
+                logos.forEach((logo, index) => {
+                    logo.style.cursor = 'pointer';
+                    logo.addEventListener('click', function() {
+                        const clientNumber = (index % 8) + 1; // Получаем номер клиента (1-8)
+                        openModal(`modal-client-${clientNumber}`);
+                    });
+                    
+                    // Обработка ошибок загрузки изображений
+                    logo.addEventListener('error', function() {
+                        console.warn(`Ошибка загрузки изображения ${index + 1}`);
+                        this.style.opacity = '0.3';
+                    });
+                });
+                
+                // Проверяем поддержку Intersection Observer
+                if (!('IntersectionObserver' in window)) {
+                    console.warn('Intersection Observer не поддерживается, запускаем анимацию сразу');
+                    logoContainer.classList.add('animate');
+                }
+                
+                console.log('Карусель инициализирована с отложенным запуском');
+            } else {
+                console.error('Элементы карусели не найдены');
             }
         }
         
@@ -989,11 +1082,13 @@
         // Запускаем слайдер при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             initImageSlider();
+            initCarousel();
         });
         
         // Также запускаем при полной загрузке страницы
         window.addEventListener('load', function() {
             initImageSlider();
+            initCarousel();
         });
         
 
