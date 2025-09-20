@@ -1,0 +1,15 @@
+* [33meb45329[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m Update product management and UI improvements
+* [33m4e7c396[m feat: обавлена система размеров с индивидуальными ценами
+* [33m7a6cc62[m anim
+* [33mf7dd415[m style catalog_one
+* [33m4d2e035[m style catalogs
+* [33mcbead80[m Update project files and components
+* [33m90f9ae8[m style
+* [33mba822f4[m catalog
+* [33mbaf19b3[m belongToMany
+[31m|[m * [33m3bb0d0d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update README.md
+[31m|[m[31m/[m  
+* [33mffc0d47[m[33m ([m[1;32mmaster[m[33m)[m catalog
+* [33m3010133[m knopka
+* [33m0d4fc09[m imput
+* [33m3434d9b[m first commit

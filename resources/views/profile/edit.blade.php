@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Профиль')
+    
     <x-slot name="header">
         <h2 class="font-bold text-2xl text-gray-800 leading-tight">
             Профиль
@@ -9,16 +11,18 @@
     <div class="min-h-screen bg-base-200 py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Карточка информации профиля -->
-            <div class="p-8 sm:p-10 bg-neutral-50 shadow-lg rounded-lg fade-in card-hover">
-                <div class="flex items-center space-x-3 mb-6">
-                    <div class="p-3 bg-cyan-700 rounded shadow-md">
+            <div class="p-8 sm:p-10 bg-neutral-100 shadow-lg rounded-lg fade-in card-hover">
+                <div class="flex items-center space-x-3  ">
+                    <div class="p-3 bg-cyan-700 rounded shadow-md ">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Информация профиля</h3>
                 </div>
+                <div class="mt-6">
                 @include('profile.partials.update-profile-information-form')
+                </div>
             </div>
 
             <!-- Карточка смены пароля -->
@@ -31,7 +35,9 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Безопасность</h3>
                 </div>
+                <div class="mt-6">
                 @include('profile.partials.update-password-form')
+                </div>
             </div>
 
             <!-- Карточка удаления аккаунта -->
@@ -44,7 +50,9 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Удаление аккаунта</h3>
                 </div>
+                <div class="mt-6">
                 @include('profile.partials.delete-user-form')
+                </div>
             </div>
         </div>
     </div>

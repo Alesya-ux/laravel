@@ -15,7 +15,7 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -25,6 +25,16 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'client_type' => ['required', 'string', 'in:individual,legal'],
+            'phone' => ['nullable', 'string', 'max:20'],
         ];
+
+        // Добавляем правила для юридических лиц
+        if ($this->input('client_type') === 'legal') {
+            $rules['unp'] = ['required', 'string', 'max:15', 'regex:/^\d{9}$/'];
+            $rules['company_name'] = ['required', 'string', 'max:255'];
+        }
+
+        return $rules;
     }
 }

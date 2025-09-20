@@ -34,9 +34,9 @@
                 </a>
             @endif
 
-                <x-primary-button class="ms-3 bg-cyan-500 hover:bg-cyan-700 text-white btn-animate ripple">
+                <button type="submit" class="ms-3 btn ml-2 bg-cyan-700 hover:bg-cyan-600 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out">
                     {{ __('Вход') }}
-                </x-primary-button>
+                </button>
         </div>
     </form>
 </x-guest-layout>

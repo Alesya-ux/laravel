@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Catalog;
+use App\Models\Faq;
 
 class ProductsController extends Controller
 {
@@ -32,6 +33,29 @@ class ProductsController extends Controller
             }
         }
         
-        return view('product', compact('product', 'size_arr', 'sizes_with_prices', 'catalogs', 'world'));
+        // Загружаем FAQ для товара: по категориям + по конкретному товару
+        $faqs = collect();
+        
+        // FAQ для категорий товара (только если товар принадлежит к этой категории)
+        if($product->catalogs->count() > 0) {
+            $categoryIds = $product->catalogs->pluck('id');
+            $categoryFaqs = Faq::active()
+                ->whereIn('category_id', $categoryIds)
+                ->ordered()
+                ->get();
+            $faqs = $faqs->merge($categoryFaqs);
+        }
+        
+        // FAQ для конкретного товара (независимо от категории товара)
+        $productFaqs = Faq::active()
+            ->forProduct($product->id)
+            ->ordered()
+            ->get();
+        $faqs = $faqs->merge($productFaqs);
+        
+        // Убираем дубликаты
+        $faqs = $faqs->unique('id');
+        
+        return view('product', compact('product', 'size_arr', 'sizes_with_prices', 'catalogs', 'world', 'faqs'));
     }
 }

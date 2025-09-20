@@ -7,8 +7,11 @@
     </header> <!-- Сделать SEO-->
 
     <main>
+    <div class = "p-6 ">
+            <h1 class="text-3xl font-semibold"> {{ $catalog->name }} </h1>
+        </div>
 
-        <section class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
+        <section class="rounded-lg bg-neutral-50 shadow-lg  max-w-[95%] mx-auto  fade-in section-shadow">
 
             <div class="ml-4 w-full lg:w-1/2  ">
                 <h2 class="text-3xl font-semibold text-fade-in">
@@ -42,23 +45,7 @@
                                             </h3>
                                             @if($product->price)
                                                 <div class="mt-2">
-                                                    @php
-                                                        // Обрабатываем различные варианты разделителей цен
-                                                        $price = trim($product->price);
-                                                        if (strpos($price, '/') !== false) {
-                                                            $prices = explode('/', $price);
-                                                        } elseif (strpos($price, ',') !== false) {
-                                                            $prices = explode(',', $price);
-                                                        } elseif (strpos($price, ';') !== false) {
-                                                            $prices = explode(';', $price);
-                                                        } elseif (strpos($price, '|') !== false) {
-                                                            $prices = explode('|', $price);
-                                                        } else {
-                                                            $prices = [$price];
-                                                        }
-                                                        $firstPrice = number_format((float)trim($prices[0]), 2, ',', ' ');
-                                                    @endphp
-                                                    <span class="text-lg font-bold text-cyan-700">от {{ $firstPrice }} руб</span>
+                                                    <span class="text-lg font-bold text-cyan-700">{{ $product->getFormattedFirstPrice() }}</span>
                                                 </div>
                                             @endif
                                         </div>
@@ -75,22 +62,32 @@
             </div>
         </section>
 
+        <section class="rounded-lg bg-neutral-50 shadow-lg p-6 max-w-[70%] mx-auto mt-10 fade-in">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Часто задаваемые вопросы</h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto">Здесь вы найдете всю необходимую информацию о продукте</p>
+            </div>
+        </section>
+
         <aside class="rounded-lg bg-neutral-50 shadow-lg p-4 max-w-[95%] mx-auto mt-10 fade-in section-shadow">
-            <div class="collapse bg-base-100 border-base-300 border mt-2 ">
-                <input type="checkbox"/>
-                <div class="collapse-title font-semibold">?</div>
-                <div class="collapse-content text-sm">
-                    Click the "Sign Up" button in the top right corner and follow the registration process.
+            @if($faqs && $faqs->count() > 0)
+                @foreach($faqs as $faq)
+                    <div class="collapse bg-base-100 border-base-300 border mt-2">
+                        <input type="checkbox"/>
+                        <div class="collapse-title font-semibold text-gray-700 hover:text-cyan-700 transition-colors">
+                            {{ $faq->question }}
+                        </div>
+                        <div class="collapse-content text-sm text-gray-600">
+                            <p>{{ $faq->answer }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="text-center py-8">
+                    <p class="text-gray-500">Часто задаваемые вопросы пока не добавлены.</p>
                 </div>
-            </div>
-            <div class="collapse bg-base-100 border-base-300 border mt-2 ">
-                <input type="checkbox"/>
-                <div class="collapse-title font-semibold">?</div>
-                <div class="collapse-content text-sm">
-                    Click the "Sign Up" button in the top right corner and follow the registration process.
-                </div>
-            </div>
-        </aside><!-- Добавить блок для вопросов -->
+            @endif
+        </aside>
 
     </main>
 

@@ -1,5 +1,5 @@
 <section>
-    <header>
+    <header class="mb-6">
         <h2 class="text-lg font-medium text-gray-900">
             Обновление пароля
         </h2>

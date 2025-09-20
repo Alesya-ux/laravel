@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Catalog;
+use App\Models\Faq;
 use Auth;
 
 class CatalogController extends Controller
@@ -24,12 +25,18 @@ class CatalogController extends Controller
         $catalogs = Catalog::whereNull('parent_id')->orderBy('id')->get();
         $world = 'catalog';
         
-        return view('catalog_one', compact('catalog', 'catalogs', 'world'));
+        // Загружаем FAQ для этой категории и общие FAQ
+        $faqs = Faq::active()
+            ->where(function($query) use ($catalog) {
+                $query->where('category_id', $catalog->id)
+                      ->orWhereNull('category_id'); // Общие FAQ
+            })
+            ->ordered()
+            ->get();
+        
+        return view('catalog_one', compact('catalog', 'catalogs', 'world', 'faqs'));
     }
     
-    public function postUserInterests(){
-        abort_if(!\Illuminate\Support\Facades\Auth::user(), 403, 'Need authorization');
-    }
     
     public function getAddProduct(Request $request, Catalog $catalog){
         abort_if(!$request->product_id, 404,'Product_id is empty');

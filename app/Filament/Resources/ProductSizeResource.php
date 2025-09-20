@@ -22,6 +22,12 @@ class ProductSizeResource extends Resource
     protected static ?string $modelLabel = 'Размер товара';
     
     protected static ?string $pluralModelLabel = 'Размеры товаров';
+    
+    // Скрываем из навигации, так как управление размерами есть в ProductResource
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {

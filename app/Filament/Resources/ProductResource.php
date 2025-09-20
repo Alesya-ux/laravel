@@ -88,6 +88,7 @@ class ProductResource extends Resource
                     ->addActionLabel('Добавить размер')
                     ->collapsible()
                     ->defaultItems(1),
+                
 
             ]);
     }

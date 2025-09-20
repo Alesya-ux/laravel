@@ -3,11 +3,7 @@
 @section('content')
 
 <style>
-/* ========================================
-   СТИЛИ ДЛЯ КАТАЛОГА (TAILWIND COMPATIBLE)
-   ======================================== */
-
-/* Ограничение текста для Tailwind */
+/* Стили для каталога */
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -22,169 +18,73 @@
     overflow: hidden;
 }
 
-/* Дополнительный breakpoint для очень маленьких экранов */
 @media (max-width: 640px) {
     .xs\:w-\[calc\(100\%-0\.1rem\)\] {
         width: calc(100% - 0.1rem);
     }
 }
 
-
-/* ========================================
-   СТИЛИ ГЛАВНОЙ КАРУСЕЛИ (MAIN CAROUSEL)
-   ========================================
-   
-   ОПИСАНИЕ:
-   - CSS стили для интерактивного слайдера
-   - Анимации переходов между слайдами
-   - Стили кнопок навигации
-   - Адаптивные стили для разных устройств
-*/
-
-/* ========================================
-   СТИЛИ СЛАЙДОВ КАРУСЕЛИ
-   ======================================== */
-
-/* 
-    БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СЛАЙДОВ
-    ================================
-    
-    ОПИСАНИЕ:
-    - Применяются ко всем слайдам по умолчанию
-    - Слайды изначально невидимы (opacity: 0)
-    - Используется абсолютное позиционирование для наложения
-    - Плавные переходы для создания анимации
-*/
+/* Стили карусели */
 .carousel-item {
-    transition: opacity 0.5s ease-in-out;  /* Плавный переход прозрачности за 0.5 секунды */
-    opacity: 0;                             /* Изначально полностью прозрачен (невидим) */
-    position: absolute;                     /* Абсолютное позиционирование для наложения слайдов */
-    top: 0;                                /* Позиционирование сверху */
-    left: 0;                               /* Позиционирование слева */
-    width: 100%;                           /* Занимает всю ширину контейнера */
-    height: 100%;                          /* Занимает всю высоту контейнера */
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-/* 
-    СТИЛИ ДЛЯ АКТИВНОГО СЛАЙДА
-    ===========================
-    
-    ОПИСАНИЕ:
-    - Применяются только к видимому слайду
-    - Полная непрозрачность (opacity: 1)
-    - Относительное позиционирование для нормального потока документа
-*/
 .carousel-item.active {
-    opacity: 1;                             /* Полностью непрозрачен (видим) */
-    position: relative;                     /* Относительное позиционирование для нормального потока */
+    opacity: 1;
+    position: relative;
 }
 
-/* ========================================
-   КОНТЕЙНЕР КАРУСЕЛИ
-   ======================================== */
-
-/* 
-    ОСНОВНОЙ КОНТЕЙНЕР ДЛЯ СЛАЙДЕРА
-    =================================
-    
-    ОПИСАНИЕ:
-    - Создает контекст позиционирования для слайдов
-    - Устанавливает фиксированную высоту
-    - Скрывает выходящие за границы элементы
-*/
 .carousel-container {
-    position: relative;                     /* Создает контекст позиционирования для абсолютно позиционированных слайдов */
-    height: 450px;                         /* Фиксированная высота карусели  */
-    overflow: hidden;                      /* Скрывает части слайдов, выходящие за границы контейнера */
+    position: relative;
+    overflow: hidden;
 }
 
-/* ========================================
-   КНОПКИ НАВИГАЦИИ КАРУСЕЛИ
-   ======================================== */
-
-/* 
-    БАЗОВЫЕ СТИЛИ ДЛЯ КНОПОК НАВИГАЦИИ
-    ===================================
-    
-    ОПИСАНИЕ:
-    - Круглые полупрозрачные кнопки
-    - Позиционируются поверх слайдов
-    - Имеют hover эффекты и плавные переходы
-    - Центрируются по вертикали
-*/
+/* Кнопки навигации */
 .carousel-nav-btn {
-    position: absolute;                     /* Абсолютное позиционирование относительно контейнера карусели */
-    top: 50%;                              /* Позиционирование по центру по вертикали */
-    transform: translateY(-50%);           /* Точное центрирование с учетом высоты кнопки */
-    z-index: 20;                          /* Высокий z-index для отображения поверх слайдов */
-    background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый фон (80% непрозрачности) */
-    border: none;                          /* Убираем стандартную рамку */
-    border-radius: 50%;                    /* Круглая форма кнопки */
-    width: 50px;                          /* Ширина кнопки (3.125rem) */
-    height: 50px;                         /* Высота кнопки (3.125rem) */
-    display: flex;                         /* Flexbox для центрирования содержимого */
-    align-items: center;                   /* Центрирование по вертикали */
-    justify-content: center;               /* Центрирование по горизонтали */
-    cursor: pointer;                       /* Курсор-указатель при наведении */
-    transition: background-color 0.3s ease; /* Плавный переход цвета фона за 0.3 секунды */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* 
-    HOVER ЭФФЕКТ ДЛЯ КНОПОК НАВИГАЦИИ
-    ===================================
-    
-    ОПИСАНИЕ:
-    - При наведении курсора фон становится полностью белым
-    - Создает интерактивность и улучшает UX
-*/
 .carousel-nav-btn:hover {
-    background-color: white;               /* Полностью белый фон при наведении */
+    background-color: white;
 }
 
-/* 
-    ПОЗИЦИОНИРОВАНИЕ ЛЕВОЙ КНОПКИ (ПРЕДЫДУЩИЙ)
-    ===========================================
-    
-    ОПИСАНИЕ:
-    - Размещается слева от контейнера
-    - Отступ 20px от левого края
-*/
 .carousel-nav-btn.prev {
-    left: 20px;                           /* Отступ от левого края (1.25rem) */
+    left: 20px;
 }
 
-/* 
-    ПОЗИЦИОНИРОВАНИЕ ПРАВОЙ КНОПКИ (СЛЕДУЮЩИЙ)
-    ===========================================
-    
-    ОПИСАНИЕ:
-    - Размещается справа от контейнера
-    - Отступ 20px от правого края
-*/
 .carousel-nav-btn.next {
-    right: 20px;                          /* Отступ от правого края (1.25rem) */
+    right: 20px;
 }
 
-/* 
-    СТИЛИ ДЛЯ ОТКЛЮЧЕННЫХ КНОПОК
-    ==============================
-    
-    ОПИСАНИЕ:
-    - Применяются когда кнопка неактивна
-    - Сниженная прозрачность и отключенный курсор
-    - Используется для крайних слайдов (первый/последний)
-*/
 .carousel-nav-btn:disabled {
-    opacity: 0.5;                         /* Сниженная прозрачность (50%) */
-    cursor: not-allowed;                  /* Курсор "запрещено" */
+    opacity: 0.5;
+    cursor: not-allowed;
 }
-
 </style>
 
     <main>
         <!-- ГЛАВНАЯ КАРУСЕЛЬ (MAIN CAROUSEL) -->
         <section class="rounded-lg bg-neutral-50 shadow-lg p-2 sm:p-4 max-w-[95%] mx-auto mt-6 sm:mt-8 md:mt-10 fade-in">
-            <div class="carousel-container w-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px]" id="mainCarousel">
+            <div class="carousel-container w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]" id="mainCarousel">
                 <div id="slide1" class="carousel-item active">
                     <div class="hero relative overflow-hidden h-full">
                         <div class="hero-bg absolute top-0 left-0 w-full h-full z-0"
@@ -346,6 +246,7 @@
             </div>
         </section>
 
+        <!-- Блок "Каталог" -->
         <section class="rounded-lg bg-neutral-50 max-w-[95%] mx-auto shadow-lg p-10 mt-10 fade-in">
             <div class="ml-4 w-full lg:w-1/2">
                 <h2 class="text-3xl font-semibold text-gray-800">Каталог</h2>
@@ -354,17 +255,17 @@
             <!-- Адаптивная карусель каталога -->
             <div class="relative mt-6">
                 <!-- Контейнер карусели -->
-                <div class="relative w-full overflow-hidden py-3 bg-transparent">
+                <div class="relative w-full overflow-hidden py-3">
                     <div class="flex transition-transform duration-500 ease-in-out" id="catalogTrack">
                         @foreach($catalogs as $catalog)
                             <div class="catalog-slide flex-shrink-0 w-[calc(20%-0.1rem)] min-w-[160px] xl:w-[calc(20%-0.1rem)] lg:w-[calc(25%-0.1rem)] md:w-[calc(33.333%-0.1rem)] sm:w-[calc(50%-0.1rem)] xs:w-[calc(100%-0.1rem)]">
-                                <div class="card bg-base-200 image-full shadow-lg transition-all duration-300 group mx-0.5 h-[420px] md:h-[380px] sm:h-[400px] hover:-translate-y-2 hover:shadow-2xl">
+                                <div class="card bg-white shadow-lg transition-all duration-300 group mx-0.5 h-[420px] md:h-[380px] sm:h-[400px] hover:-translate-y-2 hover:shadow-2xl">
                                     <figure class="relative overflow-hidden">
                                         <img src="/storage/{{$catalog->picture}}" alt="{{$catalog->name}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                     </figure>
                                     <div class="card-body p-4">
-                                        <h3 class="text-xl font-semibold text-white mb-2 line-clamp-2">{{$catalog->name}}</h3>
-                                        <p class="text-sm text-gray-200 mb-4 line-clamp-3">{{$catalog->description}}</p>
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-2 line-clamp-2">{{$catalog->name}}</h3>
+                                        <p class="text-sm text-gray-600 mb-4 line-clamp-3">{{$catalog->description}}</p>
                                         <div class="card-actions justify-end">
                                             <a href="/catalog/{{$catalog->id}}" class="btn btn-primary bg-cyan-700 hover:bg-cyan-600 text-white border-0 transition-all duration-300 hover:scale-105">
                                                 Подробнее

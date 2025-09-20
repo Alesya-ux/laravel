@@ -22,6 +22,12 @@ class ProductImageResource extends Resource
     protected static ?string $modelLabel = 'Изображение товара';
     
     protected static ?string $pluralModelLabel = 'Изображения товаров';
+    
+    // Скрываем из навигации, так как управление изображениями есть в ProductResource
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {

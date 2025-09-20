@@ -58,6 +58,79 @@ class Product extends Model
     }
     
     /**
+     * Парсит строку цен с различными разделителями
+     * Поддерживает: /, ,, ;, |
+     */
+    public function parsePrices()
+    {
+        if (!$this->price) {
+            return [];
+        }
+        
+        $price = trim($this->price);
+        $separators = ['/', ',', ';', '|'];
+        
+        foreach ($separators as $separator) {
+            if (strpos($price, $separator) !== false) {
+                return array_map('trim', explode($separator, $price));
+            }
+        }
+        
+        return [trim($price)];
+    }
+    
+    /**
+     * Получить первую (минимальную) цену из строки
+     */
+    public function getFirstPrice()
+    {
+        $prices = $this->parsePrices();
+        return !empty($prices) ? (float)trim($prices[0]) : null;
+    }
+    
+    /**
+     * Получить отформатированную первую цену для отображения
+     */
+    public function getFormattedFirstPrice()
+    {
+        $firstPrice = $this->getFirstPrice();
+        if ($firstPrice === null) {
+            return 'Цена не указана';
+        }
+        
+        return 'от ' . number_format($firstPrice, 2, ',', ' ') . ' руб';
+    }
+    
+    /**
+     * Получить все цены в виде массива чисел
+     */
+    public function getAllPrices()
+    {
+        $prices = $this->parsePrices();
+        return array_map(function($price) {
+            return (float)trim($price);
+        }, $prices);
+    }
+    
+    /**
+     * Получить минимальную цену из всех цен
+     */
+    public function getMinPriceFromString()
+    {
+        $prices = $this->getAllPrices();
+        return !empty($prices) ? min($prices) : null;
+    }
+    
+    /**
+     * Получить максимальную цену из всех цен
+     */
+    public function getMaxPriceFromString()
+    {
+        $prices = $this->getAllPrices();
+        return !empty($prices) ? max($prices) : null;
+    }
+    
+    /**
      * Get the price without currency for calculations (для обратной совместимости)
      */
     public function getNumericPriceAttribute()
@@ -132,5 +205,6 @@ class Product extends Model
     {
         return $this->additionalImages()->count() > 0;
     }
+    
 }
 
