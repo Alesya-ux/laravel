@@ -6,69 +6,277 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link type="image/x-icon" rel="shortcut icon" href="pictures/logo/favicon.ico">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css"/>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    {{-- Livewire Styles --}}
+    @livewireStyles
+    
+    {{-- Vite Assets (Tailwind CSS + Alpine.js) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     @include('components.global-styles')
-    <title>АДЕНТИНА СЕРВИС</title>
-    <meta name="description" content="Компания АДЕНТИНА СЕРВИС осуществляет продажу дезматов и дезковриков,генераторов холодного и горячего тумана,а также доставку продукции во все Беларуси"> <!-- Сделать описание компании -->
-    <meta name="keywords" content="дезковрики, дезковрик, дезматы, дезинфектанты, дезинфекционные коврики,генераторы горячего тумана, дезустановка, дустер, дозатор сенсорный, дозатор локтевой, генераторы холодного тумана "><!-- Записать ключевые слова -->
+    
+    <!-- Кастомные стили для выпадающего меню -->
+    <style>
+        /* Основные стили для выпадающего меню */
+        .dropdown-container {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            min-width: 320px; /* Еще больше увеличили минимальную ширину */
+            max-height: 60vh;
+            overflow-y: auto;
+            overflow-x: hidden; /* Скрываем горизонтальный скролл */
+            
+            /* Анимация появления */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        /* Показываем меню при наведении */
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Поворачиваем стрелку при наведении */
+        .dropdown-container:hover svg {
+            transform: rotate(180deg);
+        }
+        
+        /* Стили для элементов меню */
+        .dropdown-item {
+            display: block;
+            padding: 6px 30px; /* Еще больше увеличили отступы до 30px */
+            color: #374151;
+            text-decoration: none;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.875rem; /* 14px */
+            line-height: 1.25rem; /* 20px */
+            white-space: nowrap; /* Не переносить текст */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Многоточие для длинного текста */
+            transform-origin: left center; /* Точка масштабирования слева */
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            color: #0891b2; /* Только изменение цвета текста на cyan-700 */
+        }
+        
+        /* Кастомная прокрутка */
+        .dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #0891b2;
+            border-radius: 3px;
+        }
+        
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #0e7490;
+        }
+        
+        /* Для Firefox */
+        .dropdown-menu {
+            scrollbar-width: thin;
+            scrollbar-color: #0891b2 #f1f5f9;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 1024px) {
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                max-height: none;
+                overflow: visible;
+            }
+            
+            /* Стили для мобильного меню каталога */
+            .dropdown-content .dropdown-item {
+                font-size: 0.8rem; /* 12.8px для мобильных */
+                padding: 4px 24px; /* Еще больше увеличили отступы для мобильных */
+            }
+        }
+        
+        /* Выравнивание влево для маленьких экранов */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                left: auto;
+                right: 0;
+                transform-origin: top right;
+                min-width: 200px; /* Уменьшаем минимальную ширину для мобильных */
+            }
+        }
+        
+        /* Для очень маленьких экранов - полная ширина */
+        @media (max-width: 480px) {
+            .dropdown-menu {
+                left: 0;
+                right: 0;
+                min-width: 100%;
+                transform-origin: top left;
+            }
+        }
+        
+        /* Дополнительная проверка для планшетов */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .dropdown-menu {
+                /* На планшетах оставляем стандартное выравнивание */
+                left: 0;
+                right: auto;
+                transform-origin: top left;
+            }
+        }
+        
+        /* Дополнительные улучшения */
+        .dropdown-container {
+            /* Обеспечиваем правильное позиционирование */
+            display: inline-block;
+        }
+        
+        /* Улучшенная анимация для стрелки */
+        .dropdown-container svg {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        /* Фокус для доступности - только изменение цвета */
+        .dropdown-item:focus {
+            outline: none;
+            color: #0891b2;
+        }
+        
+        /* Улучшенная тень при наведении */
+        .dropdown-container:hover .dropdown-menu {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    
+    {{-- Динамический title --}}
+    <title>@yield('title', 'АДЕНТИНА СЕРВИС - Дезинфекционные материалы и оборудование')</title>
+    
+    {{-- Базовые meta теги по умолчанию --}}
+    @hasSection('meta_description')
+        <meta name="description" content="@yield('meta_description')">
+    @else
+        <meta name="description" content="Компания АДЕНТИНА СЕРВИС осуществляет продажу дезматов и дезковриков, генераторов холодного и горячего тумана, а также доставку продукции по всей Беларуси">
+    @endif
+    
+    @hasSection('meta_keywords')
+        <meta name="keywords" content="@yield('meta_keywords')">
+    @else
+        <meta name="keywords" content="дезковрики, дезковрик, дезматы, дезинфектанты, дезинфекционные коврики, генераторы горячего тумана, дезустановка, дустер, дозатор сенсорный, дозатор локтевой, генераторы холодного тумана">
+    @endif
+    
+    {{-- Open Graph теги по умолчанию --}}
+    <meta property="og:site_name" content="АДЕНТИНА СЕРВИС">
+    <meta property="og:type" content="website">
+    @hasSection('og_title')
+        <meta property="og:title" content="@yield('og_title')">
+    @else
+        <meta property="og:title" content="АДЕНТИНА СЕРВИС - Дезинфекционные материалы и оборудование">
+    @endif
+    @hasSection('og_description')
+        <meta property="og:description" content="@yield('og_description')">
+    @endif
+    @hasSection('og_image')
+        <meta property="og:image" content="@yield('og_image')">
+    @endif
+    <meta property="og:url" content="{{ url()->current() }}">
+    
+    {{-- Дополнительные meta теги через @push --}}
+    @stack('head')
     
     @stack('styles')
-</head> <!-- Отладка SEO -->
+</head>
 
 <body class="bg-base-200" data-smooth-scroll="true">
 
 <header class="shadow-sm header-transition sticky top-0 z-50">
     <nav class="bg-neutral-50 flex flex-col shadow-lg shadow-gray-200/50">
         <!-- Верхняя часть header'а -->
-        <div class="flex flex-col lg:flex-row items-center justify-between border-cyan-700 border-b px-4 py-2">
-           
-        <!-- Логотип -->
-            <div class="flex justify-center lg:justify-start mb-2 lg:mb-0">
-                <a href="/" class="flex items-center">
-                    <img src="/pictures/logo/android-chrome-192x192.png" alt="Logo" class="h-12 lg:h-16 cursor-pointer logo-spin">
-                    <span class="ml-2 text-lg lg:text-xl font-bold text-cyan-700 hidden sm:block">АДЕНТИНА СЕРВИС</span>
-                </a>
+        <div class="flex flex-col lg:flex-row items-center justify-between border-cyan-700 border-b px-2 sm:px-4 py-2 lg:py-2">
+            <!-- Логотип и бургер в одной строке на мобильных -->
+            <div class="flex items-center justify-between w-full lg:w-auto mb-2 lg:mb-0 lg:flex-initial">
+                <!-- Логотип -->
+                <div class="flex justify-center lg:justify-start">
+                    <a href="/" class="flex items-center">
+                        <img src="/pictures/logo/android-chrome-192x192.png" alt="Logo" class="h-10 sm:h-12 lg:h-16 cursor-pointer logo-spin">
+                        <span class="ml-2 text-base sm:text-lg lg:text-xl font-bold text-cyan-700 hidden sm:block">АДЕНТИНА СЕРВИС</span>
+                    </a>
+                </div>
+                
+                <!-- Бургер-меню справа на мобильных (будет показано в навигации) -->
             </div>
 
-            <!-- Поисковая форма -->
-            <div class="w-full lg:w-auto mb-2 lg:mb-0">
+            <!-- Поисковая форма - скрыта на очень маленьких экранах -->
+            <div class="hidden sm:block w-full lg:w-auto mb-2 lg:mb-0 lg:flex-1 lg:mx-4">
                 <form action="/search" method="GET" class="flex items-center justify-center lg:justify-start">
-                    <div class="relative">
+                    <div class="relative flex-1 lg:flex-initial">
                         <input
                             type="text"
                             name="q"
+                            value="{{ request('q') }}"
                             placeholder="Поиск..."
-                            class="p-2 pl-10 pr-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-700 w-64 lg:w-80"/>
-                        <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="p-1.5 sm:p-2 pl-8 sm:pl-10 pr-3 sm:pr-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-700 w-full lg:w-64 xl:w-80 text-sm"/>
+                        <svg class="absolute left-2 sm:left-3 top-1.5 sm:top-2.5 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <button type="submit" class="btn ml-2 bg-cyan-700 hover:bg-cyan-600 text-white">
-                        Найти
+                    <button type="submit" class="btn ml-1 sm:ml-2 bg-cyan-700 hover:bg-cyan-600 text-white text-sm px-3 sm:px-4 py-1.5 sm:py-2">
+                        <span class="hidden sm:inline">Найти</span>
+                        <svg class="sm:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
                     </button>
                 </form>
             </div>
 
-            <!-- Контактная информация -->
-            <div class="flex flex-col items-center lg:items-end text-sm text-center lg:text-right mb-2 lg:mb-0">
+            <!-- Контактная информация - скрыта на мобильных, показана на планшетах+ -->
+            <div class="hidden md:flex flex-col items-center lg:items-end text-xs lg:text-sm text-center lg:text-right mb-2 lg:mb-0">
                 <div class="flex items-center mb-1">
-                    <svg class="h-4 w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-3 w-3 lg:h-4 lg:w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
                     <a href="tel:+375296133169" class="hover:text-cyan-700 font-medium">+375 (29) 613-31-69</a>
                 </div>
                 <div class="flex items-center mb-1">
-                    <svg class="h-4 w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-3 w-3 lg:h-4 lg:w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                     <a href="https://www.google.com/maps?q=Ваш+точный+адрес" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-700">
-                        г. Минск, ул.Ваупшасова, 42А
+                        <span class="hidden lg:inline">г. Минск, ул.Ваупшасова, 42А</span>
+                        <span class="lg:hidden">Минск</span>
                     </a>
                 </div>
                 <div class="flex items-center">
-                    <svg class="h-4 w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-3 w-3 lg:h-4 lg:w-4 text-cyan-700 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span>Пн-Пт 9:00-17:30</span>
@@ -76,21 +284,19 @@
             </div>
 
             <!-- Кнопки авторизации и корзина -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center justify-center space-x-1 sm:space-x-2">
                 <!-- Корзина -->
-                <div class="relative">
-                    <a href="/cart" class="btn btn-circle btn-soft bg-cyan-700 hover:bg-cyan-600 text-white">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                        </svg>
-                    </a>
-                </div>
+                <a href="/cart" class="btn btn-circle btn-soft bg-cyan-700 hover:bg-cyan-600 text-white flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10">
+                    <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </a>
 
                 <!-- Кнопки авторизации -->
                 @guest()
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn btn-circle bg-cyan-700 hover:bg-cyan-600 text-white">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div tabindex="0" role="button" class="btn btn-circle bg-cyan-700 hover:bg-cyan-600 text-white flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10">
+                            <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
@@ -101,13 +307,13 @@
                     </div>
                 @else
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn btn-circle bg-cyan-700 hover:bg-cyan-600 text-white">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div tabindex="0" role="button" class="btn btn-circle bg-cyan-700 hover:bg-cyan-600 text-white flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10">
+                            <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
                         <ul tabindex="0" class="dropdown-content z-[100] menu shadow bg-neutral-50 rounded-box min-w-max mt-1">
-                            <li><a href="/dashboard" class="text-cyan-700 hover:text-cyan-700 transition-colors duration-200">Личный кабинет</a></li>
+                            <li><a href="/orders" class="text-cyan-700 hover:text-cyan-700 transition-colors duration-200">Мои заказы</a></li>
                             <li><a href="/profile" class="text-cyan-700 hover:text-cyan-700 transition-colors duration-200">Профиль</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -125,86 +331,29 @@
 
         <!-- Навигационное меню -->
         <div class="flex items-center justify-between px-4 py-2">
-            <!-- Основное меню -->
+            <!-- Основное меню для десктопа -->
             <div class="hidden lg:flex items-center space-x-1">
                 <a href="/" class="nav-link p-3  hover:text-cyan-700 rounded-md transition-colors duration-200 {{ $world == 'home' ? 'bg-cyan-700 text-white' : '' }}">
                     Главная
                 </a>
                 
                 <!-- ========================================
-                     ВЫПАДАЮЩЕЕ МЕНЮ КАТАЛОГА
+                     ВЫПАДАЮЩЕЕ МЕНЮ КАТАЛОГА (ЧИСТЫЙ CSS)
                      ======================================== -->
-                <div class="group relative">
-                    <!-- 
-                        КЛАСС "group" - создает контекст для группировки hover-эффектов
-                        КЛАСС "relative" - устанавливает относительное позиционирование для абсолютного позиционирования дочерних элементов
-                    -->
-                    
+                <div class="dropdown-container">
                     <!-- ССЫЛКА-ТРИГГЕР ДЛЯ ВЫПАДАЮЩЕГО МЕНЮ -->
                     <a href="/catalog" class="nav-link p-3 hover:text-cyan-700 rounded-md transition-colors duration-200 flex items-center">
-                        <!-- Текст ссылки -->
                         Каталог
-                        
-                        <!-- СТРЕЛКА-ИНДИКАТОР ВЫПАДАЮЩЕГО МЕНЮ -->
-                        <svg class="h-4 w-4 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <!-- 
-                                КЛАССЫ СТРЕЛКИ:
-                                - "h-4 w-4" - размеры стрелки (16x16px)
-                                - "ml-1" - отступ слева от текста
-                                - "transition-transform duration-200" - плавный переход для трансформации за 200ms
-                                - "group-hover:rotate-180" - поворот на 180° при наведении на родительский элемент
-                            -->
+                        <svg class="h-4 w-4 ml-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </a>
                     
                     <!-- ВЫПАДАЮЩЕЕ МЕНЮ С ПОДКАТЕГОРИЯМИ -->
-                    <ul class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-full left-0 z-[100] bg-white shadow-lg rounded-lg min-w-[200px] mt-1 border border-gray-200 transition-all duration-200 transform -translate-y-2 group-hover:translate-y-0">
-                        <!-- 
-                            КЛАССЫ ВЫПАДАЮЩЕГО МЕНЮ:
-                            
-                            ВИДИМОСТЬ И ПРОЗРАЧНОСТЬ:
-                            - "invisible" - изначально невидимо (не занимает место в потоке)
-                            - "group-hover:visible" - становится видимым при наведении на родительский элемент
-                            - "opacity-0" - изначально полностью прозрачно
-                            - "group-hover:opacity-100" - становится непрозрачным при наведении
-                            
-                            ПОЗИЦИОНИРОВАНИЕ:
-                            - "absolute" - абсолютное позиционирование относительно родителя
-                            - "top-full" - размещается сразу под родительским элементом
-                            - "left-0" - выравнивается по левому краю родителя
-                            - "z-[100]" - высокий z-index для правильного наложения
-                            
-                            СТИЛИЗАЦИЯ:
-                            - "bg-white" - белый фон
-                            - "shadow-lg" - большая тень для глубины
-                            - "rounded-lg" - скругленные углы
-                            - "min-w-[200px]" - минимальная ширина 200px
-                            - "mt-1" - отступ сверху 4px
-                            - "border border-gray-200" - серая рамка
-                            
-                            АНИМАЦИЯ:
-                            - "transition-all duration-200" - плавные переходы для всех свойств за 200ms
-                            - "transform -translate-y-2" - изначально смещено вверх на 8px
-                            - "group-hover:translate-y-0" - возвращается в нормальное положение при наведении
-                        -->
-                        
-                        <!-- ЦИКЛ ПО КАТАЛОГАМ - ГЕНЕРИРУЕТ ПОДМЕНЮ -->
+                    <ul class="dropdown-menu">
                         @foreach($catalogs as $catalog)
                             <li>
-                                <!-- ССЫЛКА НА ПОДКАТЕГОРИЮ -->
-                                <a href="/catalog/{{$catalog->id}}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-cyan-700 transition-colors duration-200 border-b border-gray-100 last:border-b-0">
-                                    <!-- 
-                                        КЛАССЫ ССЫЛКИ ПОДКАТЕГОРИИ:
-                                        - "block" - блочный элемент на всю ширину
-                                        - "px-4 py-3" - внутренние отступы (16px по горизонтали, 12px по вертикали)
-                                        - "text-gray-700" - цвет текста (темно-серый)
-                                        - "hover:bg-gray-50" - светло-серый фон при наведении
-                                        - "hover:text-cyan-700" - синий цвет текста при наведении
-                                        - "transition-colors duration-200" - плавные переходы цветов за 200ms
-                                        - "border-b border-gray-100" - нижняя граница для разделения элементов
-                                        - "last:border-b-0" - убирает границу у последнего элемента
-                                    -->
+                                <a href="/catalog/{{$catalog->id}}" class="dropdown-item">
                                     {{$catalog->name}}
                                 </a>
                             </li>
@@ -225,30 +374,87 @@
                 </a>
             </div>
 
-            <!-- Мобильное меню -->
-            <div class="lg:hidden ml-auto">
-                <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btn-square btn-ghost">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </div>
-                    <ul tabindex="0" class="dropdown-content z-[100] menu shadow bg-neutral-50 rounded-box min-w-max mt-1 p-2">
-                        <li><a href="/" class="hover:text-cyan-700 transition-colors duration-200">Главная</a></li>
-                        <li>
-                            <details>
-                                <summary class="hover:text-cyan-700 transition-colors duration-200">Каталог</summary>
-                                <ul>
-                                    @foreach($catalogs as $catalog)
-                                        <li><a href="/catalog/{{$catalog->id}}" class="pl-4 hover:text-cyan-700 transition-colors duration-200">{{$catalog->name}}</a></li>
-                                    @endforeach
-                                </ul>
-                            </details>
-                        </li>
-                        <li><a href="/aboute" class="hover:text-cyan-700 transition-colors duration-200">О нас</a></li>
-                        <li><a href="/delivery" class="hover:text-cyan-700 transition-colors duration-200">Доставка</a></li>
-                        <li><a href="/contacts" class="hover:text-cyan-700 transition-colors duration-200">Контакты</a></li>
-                    </ul>
+            <!-- Простое выпадающее меню для мобильных -->
+            <div class="lg:hidden ml-auto relative z-50">
+                <!-- Кнопка бургера -->
+                <button id="mobileMenuToggle" 
+                        type="button" 
+                        class="burger-menu-btn relative w-10 h-10 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-700 rounded-md transition-all duration-300 hover:bg-gray-100">
+                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <!-- Выпадающее меню -->
+                <div id="mobileMenu" 
+                     class="mobile-dropdown-menu absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible transform translate-y-[-10px] transition-all duration-200 z-50 max-h-[80vh] overflow-y-auto">
+                    <nav class="p-2">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="/" 
+                                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-cyan-50 hover:text-cyan-700 transition-colors duration-200 {{ $world == 'home' ? 'bg-cyan-100 text-cyan-700 font-semibold' : '' }}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                    </svg>
+                                    <span>Главная</span>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <div class="relative">
+                                    <div class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 font-medium">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                        </svg>
+                                        <span>Каталог</span>
+                                    </div>
+                                    <ul class="pl-8 space-y-1 border-l-2 border-cyan-100 ml-4">
+                                        @foreach($catalogs as $catalog)
+                                            <li>
+                                                <a href="/catalog/{{$catalog->id}}" 
+                                                   class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-cyan-50 hover:text-cyan-700 transition-colors duration-200 {{ $world == 'catalog' && isset($catalog) && $catalog->id == request()->route('catalog') ? 'bg-cyan-100 text-cyan-700 font-semibold' : '' }}">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                    <span>{{$catalog->name}}</span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="/aboute" 
+                                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-cyan-50 hover:text-cyan-700 transition-colors duration-200 {{ $world == 'aboute' ? 'bg-cyan-100 text-cyan-700 font-semibold' : '' }}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>О нас</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/delivery" 
+                                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-cyan-50 hover:text-cyan-700 transition-colors duration-200 {{ $world == 'delivery' ? 'bg-cyan-100 text-cyan-700 font-semibold' : '' }}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                    </svg>
+                                    <span>Доставка</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/contacts" 
+                                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-cyan-50 hover:text-cyan-700 transition-colors duration-200 {{ $world == 'contacts' ? 'bg-cyan-100 text-cyan-700 font-semibold' : '' }}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>Контакты</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -325,6 +531,92 @@
         }
         
        
+        /* ========================================
+           СТИЛИ ДЛЯ ПРОСТОГО ВЫПАДАЮЩЕГО МЕНЮ
+           ======================================== */
+        
+        /* Выпадающее меню */
+        .mobile-dropdown-menu.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        /* Прокрутка для меню */
+        .mobile-dropdown-menu {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        
+        .mobile-dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .mobile-dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .mobile-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #0891b2;
+            border-radius: 3px;
+        }
+        
+        .mobile-dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #0e7490;
+        }
+        
+        /* Адаптивность для мобильных */
+        @media (max-width: 640px) {
+            .mobile-dropdown-menu {
+                width: calc(100vw - 2rem);
+                right: 1rem;
+                left: auto;
+            }
+        }
+
+        /* ========================================
+           ОПТИМИЗАЦИЯ МОБИЛЬНОЙ ШАПКИ
+           ======================================== */
+        @media (max-width: 1023px) {
+            header nav > div:first-child {
+                padding: 0.75rem 1rem;
+            }
+            
+            header nav .w-full.lg\\:w-auto {
+                order: 3;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            header nav .flex.flex-col.lg\\:items-end {
+                order: 2;
+                margin-top: 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            header nav .flex.justify-center.lg\\:justify-start {
+                order: 1;
+            }
+            
+            header nav .flex.items-center.justify-center.space-x-2 {
+                order: 4;
+                margin-top: 0.5rem;
+            }
+            
+            header nav input {
+                font-size: 14px;
+                padding: 0.5rem;
+            }
+            
+            header nav .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
         /* Стили для header */
         .header-transition {
             transition: all 0.3s ease-in-out;
@@ -393,6 +685,15 @@
             }
             60% {
                 transform: translateY(-2px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
             }
         }
         
@@ -507,110 +808,151 @@
         <!-- Основной контент с двумя дивами -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch contact-container">
             <!-- Левый див - Картинка -->
-            <div class="relative group">
-                <div class="relative overflow-hidden rounded-2xl shadow-2xl hover-lift bg-white p-8 flex items-center justify-center h-full">
+            <div class="relative group flex items-stretch">
+                <div class="relative overflow-hidden rounded-2xl shadow-2xl hover-lift bg-white p-6 w-full flex items-center justify-center h-full">
                     <img 
                         src="/pictures/obratnay/obratnay1.png" 
                         alt="Свяжитесь с нами" 
-                        class="w-3/4 h-auto object-contain image-slide absolute opacity-100"
+                        class="w-full h-full max-h-full object-contain image-slide absolute opacity-100"
                         style="animation: imageCycle1 6s infinite;"
                     >
                     <img 
                         src="/pictures/obratnay/obratnay2.png" 
                         alt="Свяжитесь с нами" 
-                        class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                        class="w-full h-full max-h-full object-contain image-slide absolute opacity-0"
                         style="animation: imageCycle2 6s infinite;"
                     >
                     <img 
                         src="/pictures/obratnay/obratnay3.png" 
                         alt="Свяжитесь с нами" 
-                        class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                        class="w-full h-full max-h-full object-contain image-slide absolute opacity-0"
                         style="animation: imageCycle3 6s infinite;"
                     >
                     <img 
                         src="/pictures/obratnay/obratnay4.png" 
                         alt="Свяжитесь с нами" 
-                        class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                        class="w-full h-full max-h-full object-contain image-slide absolute opacity-0"
                         style="animation: imageCycle4 6s infinite;"
                     >
                     <img 
                         src="/pictures/obratnay/obratnay5.png" 
                         alt="Свяжитесь с нами" 
-                        class="w-3/4 h-auto object-contain image-slide absolute opacity-0"
+                        class="w-full h-full max-h-full object-contain image-slide absolute opacity-0"
                         style="animation: imageCycle5 6s infinite;"
                     >
                 </div>
             </div>
 
             <!-- Правый див - Форма обратной связи -->
-            <div class="bg-neutral-50 rounded-2xl shadow-xl p-8 hover-lift duration-300 border border-cyan-700/20 ">
-                <h3 class="text-2xl font-bold text-cyan-700 mb-6">Свяжитесь с нами</h3>
+            <div class="bg-neutral-50 rounded-2xl shadow-xl p-6 hover-lift duration-300 border border-cyan-700/20 ">
+                <h3 class="text-xl font-bold text-cyan-700 mb-4">Свяжитесь с нами</h3>
                 
-                <div class="mb-6">
-                    <p class="text-base-content/80">
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600">
                         Оставьте свои контактные данные, и мы свяжемся с вами!
                     </p>
                 </div>
+
+                <!-- Сообщения -->
+                @if(session('success'))
+                    <div class="alert alert-success mb-4 text-sm py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-error mb-4 text-sm py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm">{{ session('error') }}</span>
+                    </div>
+                @endif
                 
-                <form action="#" method="POST" class="space-y-6">
+                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
+                    @csrf
                     <!-- Имя -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-cyan-700 mb-2">
+                        <label for="name" class="block text-xs font-medium text-cyan-700 mb-1">
                             Ваше имя <span class="text-error">*</span>
                         </label>
                         <input 
                             type="text" 
                             id="name" 
                             name="name" 
+                            value="{{ old('name') }}"
                             required
-                            class="input input-bordered w-full border-cyan-700/30 focus:border-cyan-700 focus:ring-2 focus:ring-cyan-700/20 transition-all duration-300"
+                            class="input input-sm input-bordered w-full border-cyan-700/30 focus:border-cyan-700 focus:ring-2 focus:ring-cyan-700/20 transition-all duration-300 @error('name') border-error @enderror"
                             placeholder="Введите ваше имя"
                         >
+                        @error('name')
+                            <div class="text-error text-xs mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Телефон -->
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-cyan-700 mb-2">
+                        <label for="phone" class="block text-xs font-medium text-cyan-700 mb-1">
                             Номер телефона <span class="text-error">*</span>
                         </label>
                         <input 
                             type="tel" 
                             id="phone" 
                             name="phone"
+                            value="{{ old('phone') }}"
                             required
-                            class="input input-bordered w-full border-cyan-700/30 focus:border-cyan-700 focus:ring-2 focus:ring-cyan-700/20 transition-all duration-300"
-                            placeholder="+375 (29) 123-45-67"
+                            class="input input-sm input-bordered w-full border-cyan-700/30 focus:border-cyan-700 focus:ring-2 focus:ring-cyan-700/20 transition-all duration-300 @error('phone') border-error @enderror"
+                            placeholder="(29) 123-45-67"
                         >
+                        @error('phone')
+                            <div class="text-error text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Сообщение -->
+                    <div>
+                        <label for="message" class="block text-xs font-medium text-cyan-700 mb-1">
+                            Сообщение (необязательно)
+                        </label>
+                        <textarea 
+                            id="message" 
+                            name="message"
+                            rows="3"
+                            class="textarea textarea-sm textarea-bordered w-full border-cyan-700/30 focus:border-cyan-700 focus:ring-2 focus:ring-cyan-700/20 transition-all duration-300 @error('message') border-error @enderror"
+                            placeholder="Опишите ваш вопрос или пожелания..."
+                        >{{ old('message') }}</textarea>
+                        @error('message')
+                            <div class="text-error text-xs mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Кнопка отправки -->
                     <button 
                         type="submit" 
-                        class="btn w-full bg-cyan-700 hover:bg-cyan-600 text-white border-cyan-700 hover:border-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        class="btn btn-sm w-full bg-cyan-700 hover:bg-cyan-600 text-white border-cyan-700 hover:border-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                         <span class="flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>
-                            <span>Отправить заявку</span>
+                            <span class="text-sm">Отправить заявку</span>
                         </span>
                     </button>
                 </form>
 
                 <!-- Дополнительная информация -->
-                <div class="mt-8 pt-6 border-t border-gray-200">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-600">
                         <div class="flex items-center space-x-2">
-                            <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
                             <span>+375 (29) 613-31-69</span>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
-                            <span>info@adentina.by</span>
+                            <span>sermyazhko.alesya@mail.ru</span>
                         </div>
                     </div>
                 </div>
@@ -625,137 +967,42 @@
         </div>
         
         <!-- Логотипы клиентов -->
-        <div class="grid grid-cols-4 lg:grid-cols-8 gap-4 py-4">
+        @if(isset($clients) && $clients->count() > 0)
+        <div class="grid grid-cols-4 lg:grid-cols-8 gap-4 py-4" id="clients-carousel">
+            @foreach($clients as $index => $client)
             <div class="flex justify-center">
-                <img src="/pictures/klient/logo/1.png" alt="Клиент 1" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
+                <img src="{{ asset('storage/' . $client->logo) }}" 
+                     alt="{{ $client->name ?? 'Клиент ' . ($index + 1) }}" 
+                     data-client-id="{{ $client->id }}"
+                     class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer grayscale"
+                     @if($client->testimonial) onclick="openModal('modal-client-{{ $client->id }}')" @endif/>
             </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/2.png" alt="Клиент 2" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/3.png" alt="Клиент 3" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/4.png" alt="Клиент 4" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/5.png" alt="Клиент 5" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/6.png" alt="Клиент 6" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/7.png" alt="Клиент 7" class="client-logo h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
-            <div class="flex justify-center">
-                <img src="/pictures/klient/logo/8.png" alt="Клиент 8" class="h-40 w-auto object-contain rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"/>
-            </div>
+            @endforeach
         </div>
         
         <!-- Модальные окна с отзывами клиентов -->
-        <!-- Модальное окно для клиента 1 -->
-        <div id="modal-client-1" class="modal">
-            <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                    <button onclick="closeModal('modal-client-1')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
+        @foreach($clients as $client)
+            @if($client->testimonial)
+            <div id="modal-client-{{ $client->id }}" class="modal">
+                <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-cyan-700">{{ $client->name ? 'Отзыв: ' . $client->name : 'Отзыв клиента' }}</h3>
+                        <button onclick="closeModal('modal-client-{{ $client->id }}')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
+                    </div>
+                    <div class="text-center">
+                        <img src="{{ asset('storage/' . $client->testimonial) }}" 
+                             alt="{{ $client->name ? 'Отзыв ' . $client->name : 'Отзыв клиента' }}" 
+                             class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <img src="/pictures/klient/otzivi/1.png" alt="Отзыв клиента 1" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-                </div>
             </div>
+            @endif
+        @endforeach
+        @else
+        <div class="text-center py-8">
+            <p class="text-gray-500">Клиенты пока не добавлены</p>
         </div>
-        
-        <!-- Модальное окно для клиента 2 -->
-        <div id="modal-client-2" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-2')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/2.png" alt="Отзыв клиента 2" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 3 -->
-    <div id="modal-client-3" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-3')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/3.png" alt="Отзыв клиента 3" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 4 -->
-    <div id="modal-client-4" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-4')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/4.png" alt="Отзыв клиента 4" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 5 -->
-    <div id="modal-client-5" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-5')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/5.png" alt="Отзыв клиента 5" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 6 -->
-    <div id="modal-client-6" class="modal">
-        <div class="modal-box max-w-2xl max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-6')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/6.png" alt="Отзыв клиента 6" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 7 -->
-    <div id="modal-client-7" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-7')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/7.png" alt="Отзыв клиента 7" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно для клиента 8 -->
-    <div id="modal-client-8" class="modal">
-        <div class="modal-box max-w-lg max-h-[80vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-cyan-700">Отзыв клиента</h3>
-                <button onclick="closeModal('modal-client-8')" class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 hover:text-red-600 transition-colors">✕</button>
-            </div>
-            <div class="text-center">
-                <img src="/pictures/klient/otzivi/8.png" alt="Отзыв клиента 8" class="max-w-full h-auto mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"/>
-            </div>
-        </div>
-        </div>
+        @endif
     </section>
 
     <footer class="shadow-inner">
@@ -806,40 +1053,83 @@
     </footer>
 
     <script>
-        // Улучшенное мобильное меню
+        // Простое выпадающее меню для мобильных
         document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.querySelector('.lg\\:hidden .dropdown button');
-            const mobileMenu = document.querySelector('.lg\\:hidden .dropdown-content');
-            
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('show');
-                });
-                
-                // Закрытие меню при клике вне его
-                document.addEventListener('click', function(e) {
-                    if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-                        mobileMenu.classList.remove('show');
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            // Переключение меню
+            menuToggle?.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (mobileMenu) {
+                    mobileMenu.classList.toggle('active');
+                }
+            });
+
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', function(e) {
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    if (!mobileMenu.contains(e.target) && !menuToggle?.contains(e.target)) {
+                        mobileMenu.classList.remove('active');
                     }
-                });
-            }
-            
-            // Добавляем обработчики кликов для логотипов клиентов
-            const clientLogos = document.querySelectorAll('img[src*="/pictures/klient/logo/"]');
-            clientLogos.forEach((logo, index) => {
-                logo.addEventListener('click', function() {
-                    // Определяем номер клиента (1-8)
-                    const clientNumber = index + 1;
-                    openModal(`modal-client-${clientNumber}`);
+                }
+            });
+
+            // Закрытие меню при клике на ссылку
+            const menuLinks = mobileMenu?.querySelectorAll('a[href]');
+            menuLinks?.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                    }
                 });
             });
 
-            // Простая карусель - всего 3 строки!
+            // Закрытие при нажатии Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu?.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            });
+            
+            // Добавляем обработчики кликов для логотипов клиентов
+            const clientLogos = document.querySelectorAll('.client-logo');
+            clientLogos.forEach((logo) => {
+                const clientId = logo.getAttribute('data-client-id');
+                if (clientId) {
+                    logo.addEventListener('click', function() {
+                        const modalId = `modal-client-${clientId}`;
+                        const modal = document.getElementById(modalId);
+                        if (modal) {
+                            openModal(modalId);
+                        }
+                    });
+                }
+            });
+
+            // Карусель с серыми неактивными и цветным активным логотипом
             let currentIndex = 0;
-            setInterval(() => {
-                clientLogos.forEach((logo, i) => logo.style.opacity = i === currentIndex ? '1' : '0.5');
+            
+            function updateCarousel() {
+                clientLogos.forEach((logo, i) => {
+                    if (i === currentIndex) {
+                        // Активный логотип - цветной
+                        logo.classList.remove('grayscale');
+                    } else {
+                        // Неактивные логотипы - серые
+                        logo.classList.add('grayscale');
+                    }
+                });
                 currentIndex = (currentIndex + 1) % clientLogos.length;
-            }, 1000);
+            }
+            
+            // Устанавливаем первый логотип как активный при загрузке
+            if (clientLogos.length > 0) {
+                clientLogos[0].classList.remove('grayscale');
+            }
+            
+            // Автоматическое переключение каждые 2 секунды
+            setInterval(updateCarousel, 2000);
         });
 
 
@@ -895,8 +1185,12 @@
                 });
             }
         });
+
     </script>
 
     @include('components.global-scripts')
+    
+    {{-- Livewire Scripts --}}
+    @livewireScripts
 </body>
 </html>
